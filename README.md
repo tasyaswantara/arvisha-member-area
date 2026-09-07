@@ -11,43 +11,6 @@ Initial project structure for a custom Arvisha member area.
 - Lucide React
 - Vercel-ready configuration
 
-## Folder structure
-
-```text
-src/
-├── app/
-│   ├── (auth)/
-│   │   ├── login/
-│   │   ├── register/
-│   │   └── forgot-password/
-│   ├── (member)/
-│   │   └── member/
-│   │       ├── dashboard/
-│   │       └── products/
-│   ├── layout.js
-│   └── page.js
-├── components/
-│   ├── ui/
-│   ├── layout/
-│   └── shared/
-├── features/
-│   ├── auth/
-│   ├── member/
-│   └── products/
-├── lib/
-│   ├── supabase/
-│   └── utils/
-└── styles/
-
-public/
-├── images/
-└── icons/
-
-supabase/
-├── migrations/
-└── seed.sql
-```
-
 ## Installation
 
 ```bash
