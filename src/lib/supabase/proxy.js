@@ -14,8 +14,37 @@ function getSupabaseConfig() {
   return { url, publishableKey };
 }
 
+function createRedirectWithAuthState(
+  request,
+  pathname,
+  refreshedCookies,
+  refreshedHeaders
+) {
+  const redirectUrl = request.nextUrl.clone();
+  redirectUrl.pathname = pathname;
+  redirectUrl.search = "";
+
+  const redirectResponse = NextResponse.redirect(redirectUrl);
+
+  refreshedCookies.forEach(({ name, value, options }) => {
+    redirectResponse.cookies.set(name, value, options);
+  });
+
+  Object.entries(refreshedHeaders).forEach(([name, value]) => {
+    redirectResponse.headers.set(name, value);
+  });
+
+  return redirectResponse;
+}
+
 export async function updateSession(request) {
   const { url, publishableKey } = getSupabaseConfig();
+  const pathname = request.nextUrl.pathname;
+  const isLoginRoute = pathname === "/login";
+  const isMemberRoute =
+    pathname === "/member" || pathname.startsWith("/member/");
+  const refreshedCookies = [];
+  const refreshedHeaders = {};
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(url, publishableKey, {
@@ -24,6 +53,9 @@ export async function updateSession(request) {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet, headers) {
+        refreshedCookies.push(...cookiesToSet);
+        Object.assign(refreshedHeaders, headers);
+
         cookiesToSet.forEach(({ name, value }) => {
           request.cookies.set(name, value);
         });
@@ -41,7 +73,26 @@ export async function updateSession(request) {
     }
   });
 
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const hasAuthenticatedClaims = Boolean(data?.claims);
+
+  if (isMemberRoute && !hasAuthenticatedClaims) {
+    return createRedirectWithAuthState(
+      request,
+      "/login",
+      refreshedCookies,
+      refreshedHeaders
+    );
+  }
+
+  if (isLoginRoute && hasAuthenticatedClaims) {
+    return createRedirectWithAuthState(
+      request,
+      "/member/dashboard",
+      refreshedCookies,
+      refreshedHeaders
+    );
+  }
 
   return supabaseResponse;
 }
