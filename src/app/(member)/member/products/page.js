@@ -7,17 +7,11 @@ import { ArrowRight, Bell, ChevronDown, Search } from "lucide-react";
 
 const ownedProducts = [
   {
-    name: "Product A",
+    name: "Sample Product",
+    productKey: "sample-product",
     status: "active",
-    description: "Get access to premium resources and exclusive content.",
+    description: "Sample product description.",
     image: "/images/laptop2.png",
-    action: "Open Product",
-  },
-  {
-    name: "Product B",
-    status: "active",
-    description: "Access premium content and exclusive resources.",
-    image: "/images/laptop3.png",
     action: "Open Product",
   },
 ];
@@ -160,17 +154,23 @@ function ProductCard({ product }) {
           {product.price && <span className="shrink-0 text-sm font-semibold text-blue-600">{product.price}</span>}
         </div>
         <p className="mt-2 min-h-12 text-sm leading-6 text-[#6f87ad]">{product.description}</p>
-        <button
-          type="button"
-          className={`mt-5 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
-            owned
-              ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
-              : "border border-blue-200 text-blue-600 hover:bg-blue-50"
-          }`}
-        >
-          {product.action}
-          <ArrowRight size={16} aria-hidden="true" />
-        </button>
+        {owned ? (
+          <Link
+            href={`/member/products/${product.productKey}`}
+            className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            {product.action}
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        ) : (
+          <button
+            type="button"
+            className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-blue-200 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            {product.action}
+            <ArrowRight size={16} aria-hidden="true" />
+          </button>
+        )}
       </div>
     </article>
   );
