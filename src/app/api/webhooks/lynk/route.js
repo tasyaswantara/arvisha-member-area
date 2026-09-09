@@ -1,5 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 
+import { createAdminClient } from "@/lib/supabase/admin";
+
 function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
@@ -19,6 +21,16 @@ function configurationErrorResponse() {
     {
       ok: false,
       error: "Webhook configuration is unavailable."
+    },
+    { status: 500 }
+  );
+}
+
+function databaseErrorResponse() {
+  return Response.json(
+    {
+      ok: false,
+      error: "Webhook could not be recorded."
     },
     { status: 500 }
   );
@@ -65,11 +77,42 @@ function hasPaymentStructure(payload) {
   );
 }
 
+function calculatePayloadHash(rawBody) {
+  return createHash("sha256").update(rawBody, "utf8").digest("hex");
+}
+
+async function persistWebhookEvent({ payload, rawBody }) {
+  const { message_id: messageId } = payload.data;
+  const supabase = createAdminClient();
+  const payloadHash = calculatePayloadHash(rawBody);
+
+  const { error } = await supabase.from("webhook_events").insert({
+    provider: "lynk",
+    external_event_id: messageId,
+    event_type: "payment.received",
+    payload_hash: payloadHash,
+    payload,
+    processing_status: "received"
+  });
+
+  if (!error) {
+    return { duplicate: false };
+  }
+
+  if (error.code === "23505") {
+    return { duplicate: true };
+  }
+
+  return { error: true };
+}
+
 export async function POST(request) {
+  let rawBody;
   let payload;
 
   try {
-    payload = await request.json();
+    rawBody = await request.text();
+    payload = JSON.parse(rawBody);
   } catch {
     return invalidPayloadResponse();
   }
@@ -125,7 +168,10 @@ export async function POST(request) {
     );
   }
 
-  if (payload.data.message_action !== "SUCCESS") {
+  if (
+    payload.data.message_action !== "SUCCESS" ||
+    payload.data.message_code !== "0"
+  ) {
     return Response.json({
       ok: true,
       received: true,
@@ -133,8 +179,19 @@ export async function POST(request) {
     });
   }
 
-  return Response.json({
-    ok: true,
-    received: true
-  });
+  try {
+    const result = await persistWebhookEvent({ payload, rawBody });
+
+    if (result.error) {
+      return databaseErrorResponse();
+    }
+
+    return Response.json({
+      ok: true,
+      received: true,
+      ...(result.duplicate ? { duplicate: true } : {})
+    });
+  } catch {
+    return databaseErrorResponse();
+  }
 }
