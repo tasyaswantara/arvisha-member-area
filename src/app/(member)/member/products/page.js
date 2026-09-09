@@ -1,3 +1,306 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { ArrowRight, Bell, ChevronDown, Search } from "lucide-react";
+
+const ownedProducts = [
+  {
+    name: "Product A",
+    status: "active",
+    description: "Get access to premium resources and exclusive content.",
+    image: "/images/laptop2.png",
+    action: "Open Product",
+  },
+  {
+    name: "Product B",
+    status: "active",
+    description: "Access premium content and exclusive resources.",
+    image: "/images/laptop3.png",
+    action: "Open Product",
+  },
+];
+
+const availableProducts = [
+  {
+    name: "Product C",
+    status: "available",
+    description: "Expand your knowledge with practical resources.",
+    price: "Rp75.000",
+    image: "/images/bgeffect2.png",
+    action: "View Details",
+  },
+  {
+    name: "Product D",
+    status: "available",
+    description: "Discover more resources designed to help you grow.",
+    price: "Rp100.000",
+    image: "/images/bgeffect3.png",
+    action: "View Details",
+  },
+  {
+    name: "Product E",
+    status: "available",
+    description: "Get access to exclusive learning materials.",
+    price: "Rp125.000",
+    image: "/images/bgeffect4.png",
+    action: "View Details",
+  },
+];
+
+function productMatchesQuery(product, query) {
+  return (
+    !query ||
+    product.name.toLowerCase().includes(query) ||
+    product.description.toLowerCase().includes(query)
+  );
+}
+
+function ArvishaLogo() {
+  return (
+    <Image
+      src="/images/logotext horizontal.png"
+      alt="Arvisha"
+      width={2172}
+      height={724}
+      priority
+      sizes="(max-width: 639px) 130px, 146px"
+      className="h-auto w-[130px] object-contain object-left sm:w-[146px]"
+    />
+  );
+}
+
+function MemberHeader() {
+  return (
+    <header className="border-b border-blue-100/70 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex h-[72px] max-w-[1376px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12">
+        <div className="flex min-w-0 items-center gap-8 lg:gap-12">
+          <Link
+            href="/member/dashboard"
+            className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
+          >
+            <ArvishaLogo />
+          </Link>
+          <nav
+            className="hidden items-center gap-8 text-sm font-medium text-[#6680aa] md:flex lg:gap-10"
+            aria-label="Main navigation"
+          >
+            <Link href="/member/dashboard" className="py-7 transition hover:text-blue-600">
+              Dashboard
+            </Link>
+            <Link
+              href="/member/products"
+              className="relative py-7 text-blue-600 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-blue-500"
+            >
+              Products
+            </Link>
+            <a href="#help" className="py-7 transition hover:text-blue-600">
+              Help
+            </a>
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3 sm:gap-5">
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="relative rounded-full p-2 text-[#6f87ad] transition hover:bg-blue-50 hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          >
+            <Bell size={20} strokeWidth={1.8} aria-hidden="true" />
+            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" aria-hidden="true" />
+          </button>
+          <div className="hidden h-7 w-px bg-blue-100 sm:block" aria-hidden="true" />
+          <button
+            type="button"
+            aria-label="Open account menu"
+            aria-expanded="false"
+            className="hidden items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-[#395782] transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:flex"
+          >
+            Natasya Desinta
+            <ChevronDown size={16} aria-hidden="true" />
+          </button>
+          <form action="/auth/signout" method="post">
+            <button
+              type="submit"
+              className="rounded-lg border border-blue-200 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
+            >
+              Logout
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function ProductCard({ product }) {
+  const owned = product.status === "active";
+
+  return (
+    <article className="overflow-hidden rounded-2xl border border-blue-100/80 bg-white shadow-[0_10px_30px_rgba(50,103,172,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(50,103,172,0.1)]">
+      <div className="relative h-36 overflow-hidden bg-[#edf5ff] sm:h-40">
+        <Image
+          src={product.image}
+          alt=""
+          fill
+          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
+          className={`object-cover ${owned ? "" : "opacity-90"}`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-white/25 to-transparent" />
+        <span className="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold capitalize text-[#4f6d9e] shadow-sm">
+          <span className={`h-2 w-2 rounded-full ${owned ? "bg-emerald-400" : "bg-blue-400"}`} aria-hidden="true" />
+          {product.status}
+        </span>
+      </div>
+
+      <div className="p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-lg font-semibold tracking-[-0.02em] text-[#142447]">{product.name}</h3>
+          {product.price && <span className="shrink-0 text-sm font-semibold text-blue-600">{product.price}</span>}
+        </div>
+        <p className="mt-2 min-h-12 text-sm leading-6 text-[#6f87ad]">{product.description}</p>
+        <button
+          type="button"
+          className={`mt-5 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+            owned
+              ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
+              : "border border-blue-200 text-blue-600 hover:bg-blue-50"
+          }`}
+        >
+          {product.action}
+          <ArrowRight size={16} aria-hidden="true" />
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function ProductSection({ title, description, products, emptyMessage }) {
+  return (
+    <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+      <div>
+        <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">{title}</h2>
+        <p className="mt-1 text-sm text-[#6f87ad]">{description}</p>
+      </div>
+      {products.length > 0 ? (
+        <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard key={product.name} product={product} />
+          ))}
+        </div>
+      ) : (
+        <p className="mt-7 rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
+          {emptyMessage}
+        </p>
+      )}
+    </section>
+  );
+}
+
 export default function MemberProductsPage() {
-  return <main>Member products placeholder</main>;
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredOwnedProducts =
+    filter === "available"
+      ? []
+      : ownedProducts.filter((product) => productMatchesQuery(product, normalizedQuery));
+  const filteredAvailableProducts =
+    filter === "owned"
+      ? []
+      : availableProducts.filter((product) => productMatchesQuery(product, normalizedQuery));
+
+  return (
+    <div className="min-h-screen bg-[#f7fbff] text-[#142447]">
+      <MemberHeader />
+
+      <main>
+        <section className="relative overflow-hidden border-b border-blue-100/60">
+          <Image
+            src="/images/bgeffect.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="pointer-events-none object-cover object-center opacity-60"
+          />
+          <div className="relative mx-auto max-w-[1376px] px-5 pb-9 pt-10 sm:px-8 sm:pb-12 sm:pt-14 lg:px-10 lg:pt-16 xl:px-12">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">Products</p>
+            <h1 className="mt-3 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl">
+              Explore Products
+            </h1>
+            <p className="mt-4 text-base leading-7 text-[#6f87ad]">Access your products or discover something new.</p>
+          </div>
+        </section>
+
+        <div className="mx-auto max-w-[1376px] space-y-8 px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 xl:px-12">
+          <section aria-label="Product search and filters" className="rounded-2xl border border-blue-100/70 bg-white p-4 shadow-[0_10px_30px_rgba(50,103,172,0.05)] sm:p-5">
+            <div className="flex flex-col gap-3 md:flex-row">
+              <label className="relative min-w-0 flex-1">
+                <span className="sr-only">Search products</span>
+                <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#7890b5]" size={18} aria-hidden="true" />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search products..."
+                  className="h-11 w-full rounded-xl border border-blue-100 bg-[#f9fcff] pl-11 pr-4 text-sm text-[#142447] outline-none transition placeholder:text-[#9aacc8] focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                />
+              </label>
+              <label className="relative md:w-52">
+                <span className="sr-only">Filter products</span>
+                <select
+                  value={filter}
+                  onChange={(event) => setFilter(event.target.value)}
+                  className="h-11 w-full appearance-none rounded-xl border border-blue-100 bg-[#f9fcff] px-4 pr-10 text-sm font-medium text-[#395782] outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="all">All Products</option>
+                  <option value="owned">My Products</option>
+                  <option value="available">Available Products</option>
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#7890b5]" size={17} aria-hidden="true" />
+              </label>
+            </div>
+          </section>
+
+          <ProductSection
+            title="My Products"
+            description="Products you already have access to."
+            products={filteredOwnedProducts}
+            emptyMessage="No owned products match your search."
+          />
+          <ProductSection
+            title="Available Products"
+            description="Discover products you haven't purchased yet."
+            products={filteredAvailableProducts}
+            emptyMessage="No available products match your search."
+          />
+        </div>
+      </main>
+
+      <footer id="help" className="border-t border-blue-100/70 bg-white">
+        <div className="mx-auto flex max-w-[1376px] flex-col gap-4 px-5 py-6 text-xs text-[#7890b5] sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10 xl:px-12">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/images/logotext horizontal.png"
+              alt="Arvisha"
+              width={2172}
+              height={724}
+              sizes="92px"
+              className="h-auto w-[92px] object-contain object-left"
+            />
+            <span className="h-5 w-px bg-blue-200" aria-hidden="true" />
+            <span>© 2025 Arvisha. All rights reserved.</span>
+          </div>
+          <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer navigation">
+            <a href="#terms" className="transition hover:text-blue-600">Terms of Service</a>
+            <a href="#privacy" className="transition hover:text-blue-600">Privacy Policy</a>
+            <a href="#help" className="transition hover:text-blue-600">Help</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  );
 }
