@@ -1,93 +1,7 @@
+import { createHash, timingSafeEqual } from "node:crypto";
+
 function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
-}
-
-function describeStructure(value, depth = 0) {
-  if (value === null) {
-    return { type: "null" };
-  }
-
-  if (Array.isArray(value)) {
-    const objectItemKeys = [
-      ...new Set(value.filter(isObject).flatMap((item) => Object.keys(item)))
-    ];
-
-    return {
-      type: "array",
-      length: value.length,
-      itemKeys: objectItemKeys.slice(0, 100),
-      itemKeysTruncated: objectItemKeys.length > 100
-    };
-  }
-
-  if (!isObject(value)) {
-    return { type: typeof value };
-  }
-
-  const keys = Object.keys(value);
-  const summary = {
-    type: "object",
-    keys: keys.slice(0, 100),
-    keysTruncated: keys.length > 100
-  };
-
-  if (depth >= 4) {
-    return summary;
-  }
-
-  const nested = {};
-
-  for (const [key, child] of Object.entries(value)) {
-    if (child !== null && typeof child === "object") {
-      nested[key] = describeStructure(child, depth + 1);
-    }
-  }
-
-  if (Object.keys(nested).length > 0) {
-    summary.nested = nested;
-  }
-
-  return summary;
-}
-
-function sanitizeWebhookPayload(payload) {
-  const summary = describeStructure(payload);
-
-  if (!isObject(payload)) {
-    return summary;
-  }
-
-  if (typeof payload.event === "string") {
-    summary.event = payload.event;
-  }
-
-  if (isObject(payload.data)) {
-    summary.data = {
-      ...summary.nested?.data,
-      message_action: payload.data.message_action,
-      message_code: payload.data.message_code
-    };
-  }
-
-  return summary;
-}
-
-function getDebugHeaders(request) {
-  const protectedHeaderPattern =
-    /authorization|cookie|signature|merchant|token|secret|api[-_]?key/i;
-  const protectedHeaderNames = [];
-
-  for (const [name] of request.headers) {
-    if (protectedHeaderPattern.test(name)) {
-      protectedHeaderNames.push(name);
-    }
-  }
-
-  return {
-    contentType: request.headers.get("content-type"),
-    userAgent: request.headers.get("user-agent"),
-    protectedHeaderNames
-  };
 }
 
 function invalidPayloadResponse() {
@@ -100,68 +14,127 @@ function invalidPayloadResponse() {
   );
 }
 
+function configurationErrorResponse() {
+  return Response.json(
+    {
+      ok: false,
+      error: "Webhook configuration is unavailable."
+    },
+    { status: 500 }
+  );
+}
+
+function signaturesMatch(calculatedSignature, receivedSignature) {
+  const calculatedBuffer = Buffer.from(calculatedSignature, "utf8");
+  const receivedBuffer = Buffer.from(receivedSignature, "utf8");
+
+  if (calculatedBuffer.length !== receivedBuffer.length) {
+    return false;
+  }
+
+  return timingSafeEqual(calculatedBuffer, receivedBuffer);
+}
+
+function hasPaymentStructure(payload) {
+  const data = payload.data;
+
+  if (!isObject(data)) {
+    return false;
+  }
+
+  const messageData = data.message_data;
+
+  if (!isObject(messageData)) {
+    return false;
+  }
+
+  const totals = messageData.totals;
+
+  return (
+    typeof data.message_action === "string" &&
+    data.message_action.length > 0 &&
+    typeof data.message_code === "string" &&
+    data.message_code.length > 0 &&
+    typeof data.message_id === "string" &&
+    data.message_id.length > 0 &&
+    typeof messageData.refId === "string" &&
+    messageData.refId.length > 0 &&
+    isObject(totals) &&
+    typeof totals.grandTotal === "number" &&
+    Number.isFinite(totals.grandTotal)
+  );
+}
+
 export async function POST(request) {
-  let rawBody;
-
-  try {
-    rawBody = await request.text();
-  } catch {
-    return invalidPayloadResponse();
-  }
-
   let payload;
-  let validJson = true;
 
   try {
-    payload = JSON.parse(rawBody);
+    payload = await request.json();
   } catch {
-    validJson = false;
-  }
-
-  // TEMPORARY Phase 5C-2 debug instrumentation. Remove after the real Lynk
-  // test payload has been inspected. No body values or protected headers are logged.
-  console.info("[Lynk webhook debug]", {
-    headers: getDebugHeaders(request),
-    body: {
-      length: rawBody.length,
-      validJson,
-      structure: validJson ? sanitizeWebhookPayload(payload) : null
-    }
-  });
-
-  if (!validJson) {
     return invalidPayloadResponse();
   }
 
-  const messageData = payload?.data?.message_data;
-  const hasMinimumStructure =
-    isObject(payload) &&
-    typeof payload.event === "string" &&
-    isObject(payload.data) &&
-    typeof payload.data.message_action === "string" &&
-    typeof payload.data.message_code === "string" &&
-    isObject(messageData);
-
-  if (!hasMinimumStructure) {
+  if (!isObject(payload) || typeof payload.event !== "string") {
     return invalidPayloadResponse();
   }
 
-  // TODO: Add Lynk webhook authentication/signature verification after the
-  // official webhook documentation and a verified test request are available.
-  const isSuccessfulPayment =
-    payload.event === "payment.received" &&
-    payload.data.message_action === "SUCCESS";
-
-  if (isSuccessfulPayment) {
+  if (payload.event === "test_event") {
     return Response.json({
       ok: true,
-      received: true
+      test: true
+    });
+  }
+
+  if (payload.event !== "payment.received" || !hasPaymentStructure(payload)) {
+    return invalidPayloadResponse();
+  }
+
+  const merchantKey = process.env.LYNK_MERCHANT_KEY;
+
+  if (!merchantKey) {
+    return configurationErrorResponse();
+  }
+
+  const receivedSignature = request.headers.get("x-lynk-signature");
+
+  if (!receivedSignature) {
+    return Response.json(
+      {
+        ok: false,
+        error: "Webhook signature is required."
+      },
+      { status: 401 }
+    );
+  }
+
+  const { message_id: messageId, message_data: messageData } = payload.data;
+  const { refId, totals } = messageData;
+  const signatureString =
+    String(totals.grandTotal) + refId + messageId + merchantKey;
+  const calculatedSignature = createHash("sha256")
+    .update(signatureString)
+    .digest("hex");
+
+  if (!signaturesMatch(calculatedSignature, receivedSignature)) {
+    return Response.json(
+      {
+        ok: false,
+        error: "Invalid webhook signature."
+      },
+      { status: 401 }
+    );
+  }
+
+  if (payload.data.message_action !== "SUCCESS") {
+    return Response.json({
+      ok: true,
+      received: true,
+      ignored: true
     });
   }
 
   return Response.json({
     ok: true,
-    received: true,
-    ignored: true
+    received: true
   });
 }
