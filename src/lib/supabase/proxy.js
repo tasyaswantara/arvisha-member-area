@@ -41,6 +41,7 @@ export async function updateSession(request) {
   const { url, publishableKey } = getSupabaseConfig();
   const pathname = request.nextUrl.pathname;
   const isLoginRoute = pathname === "/login";
+  const isRegisterRoute = pathname === "/register";
   const isMemberRoute =
     pathname === "/member" || pathname.startsWith("/member/");
   const refreshedCookies = [];
@@ -85,7 +86,7 @@ export async function updateSession(request) {
     );
   }
 
-  if (isLoginRoute && hasAuthenticatedClaims) {
+  if ((isLoginRoute || isRegisterRoute) && hasAuthenticatedClaims) {
     return createRedirectWithAuthState(
       request,
       "/member/dashboard",
