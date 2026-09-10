@@ -2,11 +2,13 @@
 
 import { Maximize2, Minimize2, MonitorPlay } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function GeniallyViewer({ embedUrl, contentName }) {
   const viewerRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [fullscreenSupported, setFullscreenSupported] = useState(false);
+  const [isLoading, setIsLoading] = useState(Boolean(embedUrl));
 
   useEffect(() => {
     const viewer = viewerRef.current;
@@ -52,6 +54,7 @@ export default function GeniallyViewer({ embedUrl, contentName }) {
   return (
     <div
       ref={viewerRef}
+      aria-busy={isLoading}
       className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-blue-100 bg-[#f7fbff] sm:aspect-video [&:fullscreen]:h-screen [&:fullscreen]:w-screen [&:fullscreen]:rounded-none [&:fullscreen]:border-0"
     >
       {embedUrl ? (
@@ -60,7 +63,8 @@ export default function GeniallyViewer({ embedUrl, contentName }) {
           title={`${contentName} learning content`}
           width="100%"
           height="100%"
-          className="h-full w-full border-0"
+          onLoad={() => setIsLoading(false)}
+          className={`h-full w-full border-0 transition-opacity duration-200 ${isLoading ? "opacity-0" : "opacity-100"}`}
           frameBorder="0"
           allowFullScreen
         />
@@ -74,6 +78,12 @@ export default function GeniallyViewer({ embedUrl, contentName }) {
             <p className="mt-2 text-sm leading-6 text-[#6f87ad]">Interactive learning content will appear here.</p>
             <p className="mt-3 text-xs leading-5 text-[#91a4c1]">Genially embed will be connected in a later phase.</p>
           </div>
+        </div>
+      )}
+
+      {embedUrl && isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#f7fbff]">
+          <LoadingSpinner label="Memuat konten..." className="flex-col gap-3" />
         </div>
       )}
 

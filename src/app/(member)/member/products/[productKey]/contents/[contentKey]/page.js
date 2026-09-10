@@ -135,7 +135,7 @@ export default async function MemberContentViewerPage({ params }) {
             <div className="mt-7">
               {isDigital ? (
                 content.embedUrl ? (
-                  <GeniallyViewer embedUrl={content.embedUrl} contentName={content.name} />
+                  <GeniallyViewer key={content.contentKey} embedUrl={content.embedUrl} contentName={content.name} />
                 ) : (
                   <MissingEmbed content={content} />
                 )
