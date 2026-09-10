@@ -1,16 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Bell, BookOpen, ChevronDown } from "lucide-react";
-import GeniallyViewer from "./GeniallyViewer";
-
-const products = [
-  {
-    productKey: "sample-product",
-    name: "Sample Product",
-    description: "Sample product description.",
-    embedUrl: "",
-  },
-];
+import { getMemberProductByKey } from "@/features/products/data";
+import { ArrowLeft, ArrowRight, Bell, BookOpen, ChevronDown, FileText } from "lucide-react";
 
 function ArvishaLogo() {
   return (
@@ -113,13 +104,10 @@ function ProductNotFound() {
   );
 }
 
-export function generateStaticParams() {
-  return products.map((product) => ({ productKey: product.productKey }));
-}
-
 export default async function MemberProductAccessPage({ params }) {
   const { productKey } = await params;
-  const product = products.find((item) => item.productKey === productKey);
+  const productResult = await getMemberProductByKey(productKey);
+  const product = productResult.status === "success" ? productResult.product : null;
 
   return (
     <div className="min-h-screen bg-[#f7fbff] text-[#142447]">
@@ -149,7 +137,9 @@ export default async function MemberProductAccessPage({ params }) {
                 <h1 className="mt-3 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl">
                   {product.name}
                 </h1>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-[#6f87ad]">{product.description}</p>
+                <p className="mt-4 max-w-2xl text-base leading-7 text-[#6f87ad]">
+                  {product.description || "Your product content is available below."}
+                </p>
               </div>
             </section>
 
@@ -157,15 +147,47 @@ export default async function MemberProductAccessPage({ params }) {
               <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
                 <div className="flex items-end justify-between gap-4">
                   <div>
-                    <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">Genially Content</h2>
-                    <p className="mt-1 text-sm text-[#6f87ad]">Your interactive learning content will appear here.</p>
+                    <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">Contents in this product</h2>
+                    <p className="mt-1 text-sm text-[#6f87ad]">
+                      {product.contentCount} {product.contentCount === 1 ? "content" : "contents"} included with this product.
+                    </p>
                   </div>
                   <span className="hidden rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600 sm:inline-flex">
                     Active
                   </span>
                 </div>
-                <div className="mt-7">
-                  <GeniallyViewer embedUrl={product.embedUrl} productName={product.name} />
+                <div className="mt-7 space-y-6">
+                  {product.contents.length > 0 ? (
+                    product.contents.map((content) => (
+                      <article
+                        key={content.id}
+                        className="flex flex-col gap-5 rounded-2xl border border-blue-100 bg-[#fbfdff] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"
+                      >
+                        <div className="flex min-w-0 items-start gap-4">
+                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <FileText size={21} strokeWidth={1.8} aria-hidden="true" />
+                          </div>
+                          <div className="min-w-0">
+                            <h3 className="text-base font-semibold text-[#142447]">{content.name}</h3>
+                            <span className="mt-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold capitalize text-blue-600">
+                              {content.contentType}
+                            </span>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/member/products/${product.productKey}/contents/${content.contentKey}`}
+                          className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-50 px-5 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto"
+                        >
+                          {content.contentType === "print" ? "Lihat Detail" : "Mulai"}
+                          <ArrowRight size={16} aria-hidden="true" />
+                        </Link>
+                      </article>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
+                      No active content is available for this product yet.
+                    </div>
+                  )}
                 </div>
               </section>
             </div>

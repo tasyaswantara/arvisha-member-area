@@ -1,20 +1,49 @@
 "use client";
 
-import { Maximize2, MonitorPlay } from "lucide-react";
-import { useRef } from "react";
+import { Maximize2, Minimize2, MonitorPlay } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-export default function GeniallyViewer({ embedUrl, productName }) {
+export default function GeniallyViewer({ embedUrl, contentName }) {
   const viewerRef = useRef(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenSupported, setFullscreenSupported] = useState(false);
+
+  useEffect(() => {
+    const viewer = viewerRef.current;
+
+    if (!viewer) {
+      return undefined;
+    }
+
+    const syncFullscreenState = () => {
+      setIsFullscreen(document.fullscreenElement === viewer);
+    };
+
+    setFullscreenSupported(
+      typeof viewer.requestFullscreen === "function" &&
+        typeof document.exitFullscreen === "function" &&
+        document.fullscreenEnabled !== false,
+    );
+    document.addEventListener("fullscreenchange", syncFullscreenState);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", syncFullscreenState);
+    };
+  }, [embedUrl]);
 
   async function handleFullscreen() {
     const viewer = viewerRef.current;
 
-    if (!viewer || typeof viewer.requestFullscreen !== "function") {
+    if (!viewer || !fullscreenSupported) {
       return;
     }
 
     try {
-      await viewer.requestFullscreen();
+      if (document.fullscreenElement === viewer) {
+        await document.exitFullscreen();
+      } else {
+        await viewer.requestFullscreen();
+      }
     } catch {
       // Fullscreen can be denied by the browser or device and should fail quietly.
     }
@@ -23,13 +52,16 @@ export default function GeniallyViewer({ embedUrl, productName }) {
   return (
     <div
       ref={viewerRef}
-      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-blue-100 bg-[#f7fbff] sm:aspect-video"
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-blue-100 bg-[#f7fbff] sm:aspect-video [&:fullscreen]:h-screen [&:fullscreen]:w-screen [&:fullscreen]:rounded-none [&:fullscreen]:border-0"
     >
       {embedUrl ? (
         <iframe
           src={embedUrl}
-          title={`${productName} learning content`}
+          title={`${contentName} learning content`}
+          width="100%"
+          height="100%"
           className="h-full w-full border-0"
+          frameBorder="0"
           allowFullScreen
         />
       ) : (
@@ -45,14 +77,16 @@ export default function GeniallyViewer({ embedUrl, productName }) {
         </div>
       )}
 
-      {embedUrl && (
+      {embedUrl && fullscreenSupported && (
         <button
           type="button"
           onClick={handleFullscreen}
+          aria-label={isFullscreen ? "Keluar Fullscreen" : "Masuk Fullscreen"}
+          aria-pressed={isFullscreen}
           className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-lg bg-[#142447]/90 px-3.5 py-2.5 text-xs font-semibold text-white shadow-lg transition hover:bg-[#142447] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         >
-          <Maximize2 size={15} aria-hidden="true" />
-          Fullscreen
+          {isFullscreen ? <Minimize2 size={15} aria-hidden="true" /> : <Maximize2 size={15} aria-hidden="true" />}
+          {isFullscreen ? "Keluar Fullscreen" : "Masuk Fullscreen"}
         </button>
       )}
     </div>
