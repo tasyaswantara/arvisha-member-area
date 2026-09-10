@@ -5,58 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Bell, ChevronDown, Search } from "lucide-react";
 
-const previewOwnedProducts = [
-  {
-    id: "preview-owned-product",
-    productKey: "sample-product",
-    name: "Sample Product",
-    description: "Sample product description.",
-    provider: "preview",
-    externalProductRef: null,
-    isActive: true,
-    accessStatus: "active",
-    validUntil: null,
-  },
-];
-
-const previewAvailableProducts = [
-  {
-    id: "preview-product-c",
-    productKey: "preview-product-c",
-    name: "Product C",
-    description: "Preview product for the member area UI.",
-    provider: "preview",
-    externalProductRef: null,
-    isActive: true,
-    accessStatus: null,
-    validUntil: null,
-  },
-  {
-    id: "preview-product-d",
-    productKey: "preview-product-d",
-    name: "Product D",
-    description: "Preview product for the member area UI.",
-    provider: "preview",
-    externalProductRef: null,
-    isActive: true,
-    accessStatus: null,
-    validUntil: null,
-  },
-  {
-    id: "preview-product-e",
-    productKey: "preview-product-e",
-    name: "Product E",
-    description: "Preview product for the member area UI.",
-    provider: "preview",
-    externalProductRef: null,
-    isActive: true,
-    accessStatus: null,
-    validUntil: null,
-  },
-];
-
-const previewImages = ["/images/bgeffect2.png", "/images/bgeffect3.png", "/images/bgeffect4.png"];
-
 function productMatchesQuery(product, query) {
   return (
     !query ||
@@ -65,12 +13,12 @@ function productMatchesQuery(product, query) {
   );
 }
 
-function withPresentationData(product, owned, index) {
+function withPresentationData(product, owned) {
   return {
     ...product,
-    image: owned ? "/images/laptop2.png" : previewImages[index % previewImages.length],
+    image: product.thumbnailUrl || "/images/bgeffect.png",
     status: owned ? "active" : "available",
-    action: owned ? "Open Product" : "View Details",
+    action: owned ? "Open Product" : product.purchaseUrl ? "Buy on Lynk" : "Purchase unavailable",
   };
 }
 
@@ -176,6 +124,17 @@ function ProductCard({ product }) {
         <p className="mt-2 min-h-12 text-sm leading-6 text-[#6f87ad]">
           {product.description || "No description available."}
         </p>
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-[#7890b5]">
+          {product.productType && (
+            <span className="rounded-full bg-blue-50 px-2.5 py-1 capitalize text-blue-600">
+              {product.productType}
+            </span>
+          )}
+          <span>
+            {product.contentCount} {product.contentCount === 1 ? "content" : "contents"}
+          </span>
+          {product.price !== null && product.price !== undefined && <span>• {product.price}</span>}
+        </div>
         {owned ? (
           <Link
             href={`/member/products/${product.productKey}`}
@@ -184,9 +143,20 @@ function ProductCard({ product }) {
             {product.action}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
+        ) : product.purchaseUrl ? (
+          <a
+            href={product.purchaseUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-blue-200 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            {product.action}
+            <ArrowRight size={16} aria-hidden="true" />
+          </a>
         ) : (
           <button
             type="button"
+            disabled
             className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-blue-200 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             {product.action}
@@ -223,11 +193,9 @@ function ProductSection({ title, description, products, emptyMessage }) {
 export default function ProductsPageClient({ productData }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const isPreview = productData.status === "error";
-  const sourceOwnedProducts = isPreview ? previewOwnedProducts : productData.ownedProducts;
-  const sourceAvailableProducts = isPreview ? previewAvailableProducts : productData.availableProducts;
-  const ownedProducts = sourceOwnedProducts.map((product, index) => withPresentationData(product, true, index));
-  const availableProducts = sourceAvailableProducts.map((product, index) => withPresentationData(product, false, index));
+  const isError = productData.status === "error";
+  const ownedProducts = (productData.ownedProducts ?? []).map((product) => withPresentationData(product, true));
+  const availableProducts = (productData.availableProducts ?? []).map((product) => withPresentationData(product, false));
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredOwnedProducts =
@@ -263,9 +231,9 @@ export default function ProductsPageClient({ productData }) {
         </section>
 
         <div className="mx-auto max-w-[1376px] space-y-8 px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 xl:px-12">
-          {isPreview && (
+          {isError && (
             <p className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-              Live product data is currently unavailable. Showing preview data for the UI only.
+              Live product data is currently unavailable. Please try again later.
             </p>
           )}
 

@@ -7,7 +7,16 @@ const productFields = `
   description,
   provider,
   external_product_ref,
-  is_active
+  is_active,
+  price,
+  thumbnail_url,
+  purchase_url,
+  product_type,
+  product_contents (
+    content:contents (
+      is_active
+    )
+  )
 `;
 
 function getJoinedProduct(product) {
@@ -31,6 +40,16 @@ function isCurrentActiveAccess(access, now) {
   return !Number.isNaN(validUntil) && validUntil >= now;
 }
 
+function getActiveContentCount(product) {
+  return (product.product_contents ?? []).reduce((count, productContent) => {
+    const content = Array.isArray(productContent.content)
+      ? productContent.content[0]
+      : productContent.content;
+
+    return count + (content?.is_active === true ? 1 : 0);
+  }, 0);
+}
+
 function toProductDto(product, access = null) {
   return {
     id: product.id,
@@ -40,6 +59,11 @@ function toProductDto(product, access = null) {
     provider: product.provider,
     externalProductRef: product.external_product_ref,
     isActive: product.is_active,
+    price: product.price,
+    thumbnailUrl: product.thumbnail_url,
+    purchaseUrl: product.purchase_url,
+    productType: product.product_type,
+    contentCount: getActiveContentCount(product),
     accessStatus: access?.status ?? null,
     validUntil: access?.valid_until ?? null,
   };
