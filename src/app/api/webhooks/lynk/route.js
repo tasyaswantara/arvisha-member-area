@@ -1,6 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { processLynkPayment } from "@/features/webhooks/lynk/processPayment";
 
 function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -86,24 +87,39 @@ async function persistWebhookEvent({ payload, rawBody }) {
   const supabase = createAdminClient();
   const payloadHash = calculatePayloadHash(rawBody);
 
-  const { error } = await supabase.from("webhook_events").insert({
-    provider: "lynk",
-    external_event_id: messageId,
-    event_type: "payment.received",
-    payload_hash: payloadHash,
-    payload,
-    processing_status: "received"
-  });
+  const { data, error } = await supabase
+    .from("webhook_events")
+    .insert({
+      provider: "lynk",
+      external_event_id: messageId,
+      event_type: "payment.received",
+      payload_hash: payloadHash,
+      payload,
+      processing_status: "received"
+    })
+    .select("id, processing_status, transaction_id, payload")
+    .single();
 
   if (!error) {
-    return { duplicate: false };
+    return { duplicate: false, event: data };
   }
 
-  if (error.code === "23505") {
-    return { duplicate: true };
+  if (error.code !== "23505") {
+    return { error: true };
   }
 
-  return { error: true };
+  const { data: existingEvent, error: lookupError } = await supabase
+    .from("webhook_events")
+    .select("id, processing_status, transaction_id, payload")
+    .eq("provider", "lynk")
+    .eq("external_event_id", messageId)
+    .maybeSingle();
+
+  if (lookupError || !existingEvent) {
+    return { error: true };
+  }
+
+  return { duplicate: true, event: existingEvent };
 }
 
 export async function POST(request) {
@@ -185,6 +201,26 @@ export async function POST(request) {
     if (result.error) {
       return databaseErrorResponse();
     }
+
+    if (result.event.processing_status === "processing") {
+      return Response.json({
+        ok: true,
+        received: true
+      });
+    }
+
+    if (result.event.processing_status === "processed" && result.event.transaction_id) {
+      return Response.json({
+        ok: true,
+        received: true,
+        duplicate: true
+      });
+    }
+
+    await processLynkPayment({
+      payload: result.event.payload,
+      webhookEventId: result.event.id
+    });
 
     return Response.json({
       ok: true,
