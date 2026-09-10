@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getMemberProductData } from "@/features/products/data";
 import {
   ArrowRight,
   Bell,
@@ -9,70 +10,64 @@ import {
   UserRound,
 } from "lucide-react";
 
-const dashboardStats = [
-  {
-    title: "Active Products",
-    value: "2",
-    description: "Out of 5 total products",
-    icon: Package,
-    iconClassName: "bg-blue-50 text-blue-600",
-  },
-  {
-    title: "Available Access",
-    value: "2",
-    description: "You have access to 2 products",
-    icon: KeyRound,
-    iconClassName: "bg-emerald-50 text-emerald-500",
-  },
-  {
-    title: "Account Status",
-    value: "Active",
-    description: "Your account is in good standing",
-    icon: UserRound,
-    iconClassName: "bg-violet-50 text-violet-500",
-  },
-];
-
-const ownedProducts = [
-  {
-    name: "Product A",
-    description: "Get access to premium resources and exclusive content.",
-    status: "Active",
-    image: "/images/laptop2.png",
-    action: "Open Product",
-  },
-  {
-    name: "Product B",
-    description: "Access premium content and exclusive resources.",
-    status: "Active",
-    image: "/images/laptop3.png",
-    action: "Open Product",
-  },
-];
-
 const recommendedProducts = [
   {
+    id: "recommendation-placeholder-c",
     name: "Product C",
-    description: "Expand your knowledge with practical resources.",
-    price: "Rp75.000",
+    description: "Recommendation placeholder for a future catalog feature.",
+    status: "Preview",
     image: "/images/bgeffect2.png",
     action: "View Details",
   },
   {
+    id: "recommendation-placeholder-d",
     name: "Product D",
-    description: "Discover more resources designed to help you grow.",
-    price: "Rp100.000",
+    description: "Recommendation placeholder for a future catalog feature.",
+    status: "Preview",
     image: "/images/bgeffect3.png",
     action: "View Details",
   },
   {
+    id: "recommendation-placeholder-e",
     name: "Product E",
-    description: "Get access to exclusive learning materials.",
-    price: "Rp125.000",
+    description: "Recommendation placeholder for a future catalog feature.",
+    status: "Preview",
     image: "/images/bgeffect4.png",
     action: "View Details",
   },
 ];
+
+function createDashboardStats(productData) {
+  const hasLiveData = productData.status === "success";
+  const ownedCount = hasLiveData ? productData.ownedProducts.length : "—";
+  const totalCount = hasLiveData
+    ? productData.ownedProducts.length + productData.availableProducts.length
+    : null;
+
+  return [
+    {
+      title: "Active Products",
+      value: ownedCount,
+      description: hasLiveData ? `Out of ${totalCount} total active products` : "Live product data unavailable",
+      icon: Package,
+      iconClassName: "bg-blue-50 text-blue-600",
+    },
+    {
+      title: "Available Access",
+      value: ownedCount,
+      description: hasLiveData ? "Active product access for your account" : "Live access data unavailable",
+      icon: KeyRound,
+      iconClassName: "bg-emerald-50 text-emerald-500",
+    },
+    {
+      title: "Account Status",
+      value: "Active",
+      description: "Your account is in good standing",
+      icon: UserRound,
+      iconClassName: "bg-violet-50 text-violet-500",
+    },
+  ];
+}
 
 function ArvishaLogo() {
   return (
@@ -105,6 +100,8 @@ function StatCard({ title, value, description, icon: Icon, iconClassName }) {
 }
 
 function ProductCard({ product, owned = false }) {
+  const statusLabel = owned ? "Active" : product.status || "Preview";
+
   return (
     <article className="overflow-hidden rounded-2xl border border-blue-100/80 bg-white shadow-[0_10px_30px_rgba(50,103,172,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(50,103,172,0.1)]">
       <div className="relative h-36 overflow-hidden bg-[#edf5ff] sm:h-40">
@@ -120,33 +117,38 @@ function ProductCard({ product, owned = false }) {
           {owned ? (
             <>
               <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true" />
-              {product.status}
+              {statusLabel}
             </>
           ) : (
             <>
               <span className="h-2 w-2 rounded-full bg-blue-400" aria-hidden="true" />
-              Available
+              {statusLabel}
             </>
           )}
         </span>
       </div>
       <div className="p-5 sm:p-6">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="text-lg font-semibold tracking-[-0.02em] text-[#142447]">{product.name}</h3>
-          {!owned && <span className="text-sm font-semibold text-blue-600">{product.price}</span>}
-        </div>
-        <p className="mt-2 min-h-12 text-sm leading-6 text-[#6f87ad]">{product.description}</p>
-        <button
-          type="button"
-          className={`mt-5 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
-            owned
-              ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
-              : "border border-blue-200 text-blue-600 hover:bg-blue-50"
-          }`}
-        >
-          {product.action}
-          <ArrowRight size={16} aria-hidden="true" />
-        </button>
+        <h3 className="text-lg font-semibold tracking-[-0.02em] text-[#142447]">{product.name}</h3>
+        <p className="mt-2 min-h-12 text-sm leading-6 text-[#6f87ad]">
+          {product.description || "No description available."}
+        </p>
+        {owned && product.productKey ? (
+          <Link
+            href={`/member/products/${product.productKey}`}
+            className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            {product.action}
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        ) : (
+          <button
+            type="button"
+            className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-blue-200 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            {product.action}
+            <ArrowRight size={16} aria-hidden="true" />
+          </button>
+        )}
       </div>
     </article>
   );
@@ -224,7 +226,15 @@ function DashboardHeader() {
   );
 }
 
-export default function MemberDashboardPage() {
+export default async function MemberDashboardPage() {
+  const productData = await getMemberProductData();
+  const dashboardStats = createDashboardStats(productData);
+  const ownedProducts = productData.ownedProducts.map((product, index) => ({
+    ...product,
+    image: ["/images/laptop2.png", "/images/laptop3.png"][index % 2],
+    action: "Open Product",
+  }));
+
   return (
     <div className="min-h-screen bg-[#f7fbff] text-[#142447]">
       <DashboardHeader />
@@ -287,21 +297,39 @@ export default function MemberDashboardPage() {
               title="Your Products"
               description="Access your purchased products and manage your content."
             />
-            <div className="mt-7 grid gap-5 md:grid-cols-2">
-              {ownedProducts.map((product) => (
-                <ProductCard key={product.name} product={product} owned />
-              ))}
-            </div>
+            {ownedProducts.length > 0 ? (
+              <div className="mt-7 grid gap-5 md:grid-cols-2">
+                {ownedProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} owned />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-7 rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-5 py-8 text-center">
+                <p className="text-sm text-[#6f87ad]">
+                  {productData.status === "success"
+                    ? "You do not have any active products yet."
+                    : "Live product data is currently unavailable."}
+                </p>
+                <Link
+                  href="/member/products"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
+                >
+                  Explore Products
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </div>
+            )}
           </section>
 
           <section id="help" className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
             <SectionHeading
               title="Recommended for You"
-              description="Explore products you haven't purchased yet."
+              description="Recommendation data will be connected in a later phase."
             />
+            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.14em] text-[#91a4c1]">Preview placeholder</p>
             <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {recommendedProducts.map((product) => (
-                <ProductCard key={product.name} product={product} />
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
           </section>
