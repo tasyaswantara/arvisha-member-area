@@ -22,7 +22,7 @@ values
     true,
     null,
     '/images/UTRT.png',
-    'https://lynk.id/ceritaserupasutri/01k1p3g3vjr',
+    'https://lynk.id/ceritaserupasutri/01k1p3g3vjr9',
     'base'
   ),
   (
