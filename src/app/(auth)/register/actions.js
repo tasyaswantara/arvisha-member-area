@@ -147,6 +147,57 @@ export async function registerAction(previousState, formData) {
     };
   }
 
+  try {
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createAdminClient();
+    const { data: member, error: memberError } = await adminSupabase
+      .from("members")
+      .select("id, customer_id")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    if (memberError || !member) {
+      return {
+        fieldErrors: {},
+        formError: "Account created but profile linking failed. Please contact support.",
+        success: false,
+        confirmationRequired: false
+      };
+    }
+
+    if (member.customer_id && member.customer_id !== eligibility.customerId) {
+      return {
+        fieldErrors: {},
+        formError: "Account created but could not be linked safely. Please contact support.",
+        success: false,
+        confirmationRequired: false
+      };
+    }
+
+    if (!member.customer_id) {
+      const { error: updateError } = await adminSupabase
+        .from("members")
+        .update({ customer_id: eligibility.customerId })
+        .eq("id", data.user.id);
+
+      if (updateError) {
+        return {
+          fieldErrors: {},
+          formError: "Account created but profile linking failed. Please contact support.",
+          success: false,
+          confirmationRequired: false
+        };
+      }
+    }
+  } catch (err) {
+    return {
+      fieldErrors: {},
+      formError: "Account created but profile linking failed. Please contact support.",
+      success: false,
+      confirmationRequired: false
+    };
+  }
+
   if (data.session) {
     redirect("/member/dashboard");
   }

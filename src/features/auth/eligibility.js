@@ -1,4 +1,4 @@
-import { developmentMockEligibilityProvider } from "./providers/mockEligibilityProvider";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 
@@ -17,27 +17,6 @@ function normalizeEmail(email) {
   return typeof email === "string" ? email.trim().toLowerCase() : "";
 }
 
-function getEligibilityProvider() {
-  if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
-    return developmentMockEligibilityProvider;
-  }
-
-  // Fail closed until the real provider contract is known and implemented.
-  return null;
-}
-
-function normalizeProviderResult(result) {
-  if (result?.eligible === true) {
-    return { eligible: true, reason: "eligible" };
-  }
-
-  const reason = ELIGIBILITY_REASONS.has(result?.reason)
-    ? result.reason
-    : "not_found";
-
-  return { eligible: false, reason };
-}
-
 /**
  * Checks whether an email may proceed to the future registration flow.
  *
@@ -51,16 +30,35 @@ export async function checkRegistrationEligibility(email) {
     return { eligible: false, reason: "invalid_email" };
   }
 
-  const provider = getEligibilityProvider();
-
-  if (!provider) {
-    return { eligible: false, reason: "unavailable" };
-  }
-
   try {
-    const result = await provider.check(normalizedEmail);
-    return normalizeProviderResult(result);
-  } catch {
+    const supabase = createAdminClient();
+    // We query customers joined with successful transactions.
+    // Due to the unique constraint (provider, external_customer_ref) on customers,
+    // this will return at most one customer for provider='lynk'.
+    const { data, error } = await supabase
+      .from("customers")
+      .select("id, transactions!inner(id)")
+      .eq("provider", "lynk")
+      .eq("email_normalized", normalizedEmail)
+      .eq("transactions.provider", "lynk")
+      .eq("transactions.status", "successful")
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error("[checkRegistrationEligibility] Database error:", error.message);
+      return { eligible: false, reason: "unavailable" };
+    }
+
+    if (!data) {
+      return { eligible: false, reason: "not_found" };
+    }
+
+    // Customer exists and has at least one successful transaction.
+    // We return the customerId so that the signup flow can use it for linking.
+    return { eligible: true, reason: "eligible", customerId: data.id };
+  } catch (err) {
+    console.error("[checkRegistrationEligibility] Unexpected error:", err);
     // Eligibility must fail closed without leaking provider details.
     return { eligible: false, reason: "unavailable" };
   }
