@@ -107,14 +107,32 @@ export async function reconcileProductAccessForMember({ customerId, memberId }) 
     }
   }
 
-  // 5. Grant new product access
-  if (newAccessRecords.length > 0) {
+  // 5. Grant new product access safely
+  for (const record of newAccessRecords) {
     const { error: insertError } = await supabase
       .from("product_access")
-      .insert(newAccessRecords);
+      .insert(record);
 
     if (insertError) {
-      throw new Error(`Failed to grant new product_access: ${insertError.message}`);
+      if (insertError.code === "23505") {
+        // Race condition: another process granted this product access concurrently.
+        // We gracefully recover by updating last_evaluated_at instead.
+        const { error: updateError } = await supabase
+          .from("product_access")
+          .update({ last_evaluated_at: now })
+          .eq("member_id", record.member_id)
+          .eq("product_id", record.product_id);
+
+        if (updateError) {
+          throw new Error(`Failed to update concurrent product_access: ${updateError.message}`);
+        }
+
+        // It was inserted by a concurrent process, so it counts as existing
+        grantedCount--;
+        existingCount++;
+      } else {
+        throw new Error(`Failed to grant new product_access: ${insertError.message}`);
+      }
     }
   }
 

@@ -220,6 +220,21 @@ export async function processLynkPayment({ payload, webhookEventId }) {
       items,
       productsByExternalRef
     });
+
+    const { data: member } = await supabase
+      .from("members")
+      .select("id")
+      .eq("customer_id", customerId)
+      .maybeSingle();
+
+    if (member) {
+      const { reconcileProductAccessForMember } = await import("@/features/auth/reconciliation");
+      await reconcileProductAccessForMember({
+        customerId,
+        memberId: member.id
+      });
+    }
+
     const unknownProductRefs = transactionItems
       .filter((item) => item.product_id === null)
       .map((item) => item.external_product_ref);

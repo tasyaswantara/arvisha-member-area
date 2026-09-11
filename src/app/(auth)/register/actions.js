@@ -189,7 +189,14 @@ export async function registerAction(previousState, formData) {
         };
       }
     }
+
+    const { reconcileProductAccessForMember } = await import("@/features/auth/reconciliation");
+    await reconcileProductAccessForMember({
+      customerId: eligibility.customerId,
+      memberId: data.user.id
+    });
   } catch (err) {
+    console.error("[registerAction] Post-signup linking or reconciliation failed:", err);
     return {
       fieldErrors: {},
       formError: "Account created but profile linking failed. Please contact support.",
