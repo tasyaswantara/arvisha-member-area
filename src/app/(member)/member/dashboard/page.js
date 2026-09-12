@@ -156,71 +156,84 @@ export default async function MemberDashboardPage() {
       <DashboardHeader />
 
       <main>
-        <section className="relative overflow-hidden">
-          <Image
-            src="/images/bgeffect.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="pointer-events-none object-cover object-center opacity-80"
-          />
-          <div className="relative mx-auto grid max-w-[1376px] items-center gap-8 px-5 pb-8 pt-10 sm:px-8 sm:pt-14 lg:grid-cols-[0.8fr_1.2fr] lg:px-10 lg:pb-10 lg:pt-16 xl:px-12">
-            <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
-                <UserRound size={14} strokeWidth={2} aria-hidden="true" />
-                Member Area
+        {/* HERO SECTION — temporarily hidden per client request. Remove the `false &&` to restore. */}
+        {false && (
+          <section className="relative overflow-hidden">
+            <Image
+              src="/images/bgeffect.png"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="pointer-events-none object-cover object-center opacity-80"
+            />
+            <div className="relative mx-auto grid max-w-[1376px] items-center gap-8 px-5 pb-8 pt-10 sm:px-8 sm:pt-14 lg:grid-cols-[0.8fr_1.2fr] lg:px-10 lg:pb-10 lg:pt-16 xl:px-12">
+              <div className="max-w-xl">
+                <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
+                  <UserRound size={14} strokeWidth={2} aria-hidden="true" />
+                  Member Area
+                </div>
+                <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl lg:text-[3.25rem]">
+                  Hi Natasya,
+                  <br />
+                  <span className="font-normal">Welcome back!</span>
+                </h1>
+                <p className="mt-5 max-w-md text-base leading-7 text-[#6f87ad]">
+                  Manage your products, access your content,
+                  <br className="hidden sm:block" /> and keep track of your account — all in one place.
+                </p>
+                <Link
+                  href="/member/products"
+                  className="mt-7 inline-flex items-center gap-3 rounded-full bg-primary-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                >
+                  Explore Products
+                  <ArrowRight size={18} aria-hidden="true" />
+                </Link>
               </div>
-              <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl lg:text-[3.25rem]">
-                Hi Natasya,
-                <br />
-                <span className="font-normal">Welcome back!</span>
-              </h1>
-              <p className="mt-5 max-w-md text-base leading-7 text-[#6f87ad]">
-                Manage your products, access your content,
-                <br className="hidden sm:block" /> and keep track of your account — all in one place.
-              </p>
-              <Link
-                href="/member/products"
-                className="mt-7 inline-flex items-center gap-3 rounded-full bg-primary-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-              >
-                Explore Products
-                <ArrowRight size={18} aria-hidden="true" />
-              </Link>
+              <div className="relative mx-auto h-56 w-full max-w-[650px] sm:h-72 lg:h-80 xl:h-96">
+                <Image
+                  src="/images/laptop3.png"
+                  alt="Arvisha dashboard preview"
+                  fill
+                  priority
+                  sizes="(max-width: 1023px) 92vw, (max-width: 1279px) 54vw, 650px"
+                  className="object-contain object-center"
+                />
+              </div>
             </div>
-            <div className="relative mx-auto h-56 w-full max-w-[650px] sm:h-72 lg:h-80 xl:h-96">
-              <Image
-                src="/images/laptop3.png"
-                alt="Arvisha dashboard preview"
-                fill
-                priority
-                sizes="(max-width: 1023px) 92vw, (max-width: 1279px) 54vw, 650px"
-                className="object-contain object-center"
-              />
-            </div>
-          </div>
-        </section>
-
-        <div className="mx-auto max-w-[1376px] space-y-10 px-5 pb-14 sm:px-8 lg:px-10 xl:px-12">
-          <section aria-label="Account summary" className="grid gap-4 md:grid-cols-3">
-            {dashboardStats.map((stat) => (
-              <StatCard key={stat.title} {...stat} />
-            ))}
           </section>
+        )}
 
-          <section className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+        <div className="mx-auto max-w-[1376px] space-y-6 px-5 pb-14 pt-6 sm:px-8 sm:pt-8 lg:px-10 xl:px-12">
+          {/* Greeting — preserved per client request */}
+          <div className="mb-2">
+            <h1 className="text-2xl font-bold tracking-tight text-[#142447] sm:text-3xl">
+              Hi Natasya, Welcome Back!
+            </h1>
+          </div>
+
+          {/* STATS CARDS — temporarily hidden per client request. Remove the `false &&` to restore. */}
+          {false && (
+            <section aria-label="Account summary" className="grid gap-4 md:grid-cols-3">
+              {dashboardStats.map((stat) => (
+                <StatCard key={stat.title} {...stat} />
+              ))}
+            </section>
+          )}
+
+          <section className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-7">
             <SectionHeading
               title="Your Products"
               description="Access your purchased products and manage your content."
             />
             {ownedProducts.length > 0 ? (
-              <div className="mt-7 grid gap-5 md:grid-cols-2">
+              <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {ownedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} owned />
                 ))}
               </div>
             ) : (
-              <div className="mt-7 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center">
+              <div className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center">
                 <p className="text-sm text-[#6f87ad]">
                   {productData.status === "success"
                     ? "You do not have any active products yet."
@@ -237,19 +250,19 @@ export default async function MemberDashboardPage() {
             )}
           </section>
 
-          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-7">
             <SectionHeading
               title="Recommended for You"
               description="Explore active products you have not purchased yet."
             />
             {recommendedProducts.length > 0 ? (
-              <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {recommendedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
-              <p className="mt-7 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
+              <p className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
                 {productData.status === "success"
                   ? "No additional active products are available right now."
                   : "Live product data is currently unavailable."}
