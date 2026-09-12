@@ -20,7 +20,7 @@ function withPresentationData(product, owned) {
     description: getProductDisplayDescription(product),
     image: product.thumbnailUrl || "/images/bgeffect.png",
     status: owned ? "active" : "available",
-    action: owned ? "Open Product" : product.purchaseUrl ? "Buy on Lynk" : "Purchase unavailable",
+    action: owned ? "Open Product" : product.purchaseUrl ? "Beli Dengan Promo!" : "Purchase unavailable",
   };
 }
 

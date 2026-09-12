@@ -253,7 +253,7 @@ export default async function MemberDashboardPage() {
           <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-7">
             <SectionHeading
               title="Recommended for You"
-              description="Explore active products you have not purchased yet."
+              description="Dapatkan promo 10% dengan kode voucher DISKON10 untuk produk yang tersedia di bawah ini."
             />
             {recommendedProducts.length > 0 ? (
               <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
