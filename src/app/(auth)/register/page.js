@@ -19,10 +19,10 @@ function ArvishaLogo({ compact = false }) {
   return (
     <Image
       alt="Arvisha"
-      className={`${compact ? "w-[92px]" : "w-[145px] md:w-[160px] xl:w-[178px]"} h-auto object-contain`}
+      className={`${compact ? "w-[92px]" : "w-[145px] md:w-[160px] lg:w-[178px]"} h-auto object-contain`}
       height={724}
       priority={!compact}
-      sizes={compact ? "92px" : "(max-width: 767px) 145px, (max-width: 1279px) 160px, 178px"}
+      sizes={compact ? "92px" : "(max-width: 767px) 145px, (max-width: 1023px) 160px, 178px"}
       src="/images/logotext horizontal.png"
       width={2172}
     />
@@ -73,10 +73,10 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
       {helperText ? (
         <p className="mt-1 text-xs text-[#6f87ad]">{helperText}</p>
       ) : null}
-      <div className="relative mt-3">
+      <div className="relative mt-2 lg:mt-2">
         <Icon
           aria-hidden="true"
-          className="absolute left-5 top-1/2 -translate-y-1/2 text-[#7890b5]"
+          className="absolute left-5 top-1/2 -translate-y-1/2 text-[#7890b5] lg:left-4"
           size={21}
           strokeWidth={1.8}
         />
@@ -84,7 +84,7 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
           aria-describedby={error ? errorId : undefined}
           aria-invalid={Boolean(error)}
           autoComplete={name === "fullName" ? "name" : "email"}
-          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${error ? "border-red-300" : "border-[#d7e2f0]"
+          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 lg:h-11 lg:rounded-lg lg:pl-12 lg:text-sm ${error ? "border-red-300" : "border-[#d7e2f0]"
             }`}
           id={id}
           name={name}
@@ -148,7 +148,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="relative min-h-dvh overflow-hidden bg-[#f5faff] text-[#142447]">
+    <main className="relative min-h-dvh bg-[#f5faff] text-[#142447] lg:h-dvh lg:overflow-hidden">
       <Image
         src="/images/bgeffect.png"
         alt=""
@@ -158,23 +158,23 @@ export default function RegisterPage() {
         className="pointer-events-none object-cover"
       />
 
-      <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6 sm:py-8 lg:py-4">
-        <section className="w-full max-w-[560px] rounded-[2rem] border border-white/80 bg-white/95 px-5 py-7 shadow-[0_24px_70px_rgba(62,113,190,0.14)] backdrop-blur-sm sm:px-10 sm:py-9 lg:px-12 lg:py-7">
+      <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6 sm:py-8 lg:h-dvh lg:min-h-0 lg:py-4">
+        <section className="w-full max-w-[560px] overflow-y-auto rounded-[2rem] border border-white/80 bg-white/95 px-5 py-7 shadow-[0_24px_70px_rgba(62,113,190,0.14)] backdrop-blur-sm sm:px-10 sm:py-9 lg:max-h-[calc(100dvh-2rem)] lg:px-10 lg:py-5">
 
           <div className="flex justify-center">
             <ArvishaLogo />
           </div>
 
           {!state.success && (
-            <div className="mt-6 text-center sm:mt-7 lg:mt-5">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
+            <div className="mt-6 text-center sm:mt-7 lg:mt-3">
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100 lg:hidden">
                 <UserRound aria-hidden="true" size={14} strokeWidth={2} />
                 Create your account
               </div>
-              <h1 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-[#142447] sm:text-[2.15rem] lg:mt-3 lg:text-[1.9rem]">
+              <h1 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-[#142447] sm:text-[2.15rem] lg:mt-0 lg:text-[1.65rem]">
                 Join ARVISHA today
               </h1>
-              <p className="mx-auto mt-2 max-w-[410px] text-sm leading-6 text-[#6f87ad] sm:text-base lg:mt-1.5">
+              <p className="mx-auto mt-2 max-w-[410px] text-sm leading-6 text-[#6f87ad] sm:text-base lg:hidden">
                 Fill in your details to get started.
               </p>
             </div>
@@ -200,7 +200,7 @@ export default function RegisterPage() {
               </div>
             </div>
           ) : (
-            <form action={formAction} className="mt-5 space-y-4 lg:mt-4 lg:space-y-3" noValidate onSubmit={handleSubmit}>
+            <form action={formAction} className="mt-5 space-y-4 lg:mt-3 lg:space-y-2.5" noValidate onSubmit={handleSubmit}>
               {state.formError ? (
                 <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700" role="alert">
                   {state.formError}
@@ -283,7 +283,7 @@ export default function RegisterPage() {
               </div>
 
               <button
-                className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70 lg:h-11 lg:rounded-lg lg:text-sm"
                 disabled={isPending}
                 type="submit"
               >
@@ -303,7 +303,7 @@ export default function RegisterPage() {
           )}
 
           {!state.success && (
-            <div className="mt-5 text-center text-sm text-[#6f87ad] lg:mt-4">
+            <div className="mt-5 text-center text-sm text-[#6f87ad] lg:mt-3">
               <p>
                 Already have an account?{" "}
                 <Link

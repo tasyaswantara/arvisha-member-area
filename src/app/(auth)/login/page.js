@@ -123,7 +123,7 @@ export default function LoginPage() {
         </p>
       }
     >
-      <form className="mt-8 md:mt-9 lg:mt-8 xl:mt-10" onSubmit={handleSubmit} noValidate>
+      <form className="mt-6 md:mt-7 lg:mt-5" onSubmit={handleSubmit} noValidate>
         {formError ? (
           <div
             className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700"
