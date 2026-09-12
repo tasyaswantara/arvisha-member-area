@@ -178,7 +178,7 @@ export default async function MemberProductAccessPage({ params }) {
                           href={`/member/products/${product.productKey}/contents/${content.contentKey}`}
                           className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-50 px-5 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto"
                         >
-                          {content.contentType === "print" ? "Lihat Detail" : "Mulai"}
+                          {content.contentType === "print" ? "Lihat Detail" : "Mainkan"}
                           <ArrowRight size={16} aria-hidden="true" />
                         </Link>
                       </article>
