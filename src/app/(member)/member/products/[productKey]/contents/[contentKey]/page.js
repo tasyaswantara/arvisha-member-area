@@ -114,25 +114,27 @@ export default async function MemberContentViewerPage({ params }) {
 
         <div className="mx-auto max-w-[1376px] px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 xl:px-12">
           <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">
-                  {isDigital ? "Genially Viewer" : "Content Details"}
-                </h2>
-                <p className="mt-1 text-sm text-[#6f87ad]">
-                  {isDigital ? "Your content is ready to explore." : "Information for this content edition."}
-                </p>
+            {!isDigital && (
+              <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">
+                    Content Details
+                  </h2>
+                  <p className="mt-1 text-sm text-[#6f87ad]">
+                    Information for this content edition.
+                  </p>
+                </div>
+                <Link
+                  href={`/member/products/${product.productKey}`}
+                  className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
+                >
+                  Back to Product
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
               </div>
-              <Link
-                href={`/member/products/${product.productKey}`}
-                className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
-              >
-                Back to Product
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
-            </div>
+            )}
 
-            <div className="mt-7">
+            <div>
               {isDigital ? (
                 content.embedUrl ? (
                   <GeniallyViewer key={content.contentKey} embedUrl={content.embedUrl} contentName={content.name} />
