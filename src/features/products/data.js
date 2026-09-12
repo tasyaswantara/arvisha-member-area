@@ -16,6 +16,7 @@ const productFields = `
 
 const productCatalogFields = `${productFields},
   product_contents (
+    content_id,
     content:contents (
       is_active
     )
@@ -124,13 +125,40 @@ export async function getMemberProductData() {
     }
 
     const now = Date.now();
-    const ownedProducts = (accessResult.data ?? [])
+    const activeOwnedAccess = (accessResult.data ?? [])
       .map((access) => ({ ...access, product: getJoinedProduct(access.product) }))
-      .filter((access) => isCurrentActiveAccess(access, now))
-      .map((access) => toProductDto(access.product, access));
+      .filter((access) => isCurrentActiveAccess(access, now));
+      
+    const ownedProducts = activeOwnedAccess.map((access) => toProductDto(access.product, access));
     const ownedProductIds = new Set(ownedProducts.map((product) => product.id));
+
+    const ownedContentIds = new Set();
+    for (const access of activeOwnedAccess) {
+      const product = access.product;
+      if (product && Array.isArray(product.product_contents)) {
+        for (const pc of product.product_contents) {
+          if (pc.content_id) {
+            ownedContentIds.add(pc.content_id);
+          }
+        }
+      }
+    }
+
     const availableProducts = (catalogResult.data ?? [])
-      .filter((product) => product.is_active && !ownedProductIds.has(product.id))
+      .filter((product) => {
+        if (!product.is_active || ownedProductIds.has(product.id)) {
+          return false;
+        }
+
+        let hasContentOverlap = false;
+        if (Array.isArray(product.product_contents)) {
+          hasContentOverlap = product.product_contents.some(
+            (pc) => pc.content_id && ownedContentIds.has(pc.content_id)
+          );
+        }
+
+        return !hasContentOverlap;
+      })
       .map((product) => toProductDto(product));
 
     return { status: "success", ownedProducts, availableProducts };
