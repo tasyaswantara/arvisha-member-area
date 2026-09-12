@@ -2,17 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const catalogDescriptions = {
-  "utrt-4-digital":
-    "4 edisi digital Ular Tangga Rumah Tangga untuk menemani permainan dan obrolan seru bersama pasangan.",
-  "utrt-8-digital":
-    "8 edisi digital Ular Tangga Rumah Tangga dan Edukasi Anak untuk aktivitas seru bersama pasangan dan keluarga.",
-  "utrt-family-package":
-    "Paket lengkap berisi 8 edisi digital dan 2 edisi cetak eksklusif Ular Tangga Rumah Tangga.",
-};
-
 export function getProductDisplayDescription(product) {
-  return product.description?.trim() || catalogDescriptions[product.productKey] || "";
+  return product.description?.trim() || "";
 }
 
 export default function ProductCard({ product, owned = false }) {
