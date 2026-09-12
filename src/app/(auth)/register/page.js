@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Eye, EyeOff, LockKeyhole, LoaderCircle, Mail, UserRound } from "lucide-react";
+import { ArrowRight, LoaderCircle, Mail, UserRound } from "lucide-react";
 
 import PasswordField from "@/components/auth/PasswordField";
 import { registerAction } from "./actions";
@@ -19,104 +19,13 @@ function ArvishaLogo({ compact = false }) {
   return (
     <Image
       alt="Arvisha"
-      className={`${compact ? "w-[92px]" : "w-[145px] md:w-[160px] xl:w-[178px]"} h-auto object-contain object-left`}
+      className={`${compact ? "w-[92px]" : "w-[145px] md:w-[160px] xl:w-[178px]"} h-auto object-contain`}
       height={724}
       priority={!compact}
       sizes={compact ? "92px" : "(max-width: 767px) 145px, (max-width: 1279px) 160px, 178px"}
       src="/images/logotext horizontal.png"
       width={2172}
     />
-  );
-}
-
-function Feature({ description, icon, title }) {
-  return (
-    <div className="flex gap-3 md:block">
-      <Image
-        alt=""
-        className="h-9 w-9 shrink-0 md:h-9 md:w-9 xl:h-10 xl:w-10"
-        height={1254}
-        sizes="(max-width: 1279px) 40px, 48px"
-        src={icon}
-        width={1254}
-      />
-      <div className="mt-0 md:mt-2">
-        <h3 className="text-sm font-semibold text-[#1a315b]">{title}</h3>
-        <p className="mt-1 max-w-[160px] text-sm leading-6 text-[#6f87ad] md:text-[13px] md:leading-5">
-          {description}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function MarketingPanel() {
-  return (
-    <section className="relative overflow-hidden bg-[#f5faff] px-5 pb-5 pt-6 md:px-10 md:pb-6 md:pt-8 lg:flex lg:h-dvh lg:min-h-0 lg:w-1/2 lg:flex-col lg:px-10 lg:pb-5 lg:pt-6 xl:px-14 xl:pb-6 xl:pt-8 2xl:px-16">
-      <Image
-        alt=""
-        className="pointer-events-none object-cover"
-        fill
-        priority
-        sizes="(max-width: 1023px) 100vw, 50vw"
-        src="/images/bgeffect.png"
-      />
-
-      <div className="relative z-10 mx-auto flex w-full max-w-[700px] flex-col lg:min-h-0 lg:flex-1">
-        <div className="mt-5 md:mt-6 lg:mt-4 xl:mt-5 2xl:mt-6">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
-            <UserRound aria-hidden="true" size={14} strokeWidth={2} />
-            Create your account
-          </div>
-          <h1 className="mt-3 max-w-[520px] text-3xl font-bold leading-[1.04] tracking-[-0.045em] text-[#142447] md:text-4xl lg:text-[2.5rem] xl:text-[2.75rem] 2xl:text-[2.8rem]">
-            Get started with
-            <br />
-            <span className="text-primary-600">Arvisha</span>
-          </h1>
-          <p className="mt-3 max-w-[470px] text-sm leading-6 text-[#6f87ad] md:text-[15px] md:leading-6 xl:text-base">
-            Join us and manage your products, access your content,
-            <br className="hidden md:block" /> and keep track of your account — all in one place.
-          </p>
-        </div>
-
-        <div className="mt-5 grid gap-4 md:mt-6 md:grid-cols-3 md:gap-3 lg:mt-4 xl:mt-5 xl:gap-4">
-          <Feature
-            description="Access your purchased products and manage your content."
-            icon="/icons/box.png"
-            title="Exclusive Products"
-          />
-          <Feature
-            description="Get instant access to your products anytime, anywhere."
-            icon="/icons/energy.png"
-            title="Easy Access"
-          />
-          <Feature
-            description="Your data is always protected with us."
-            icon="/icons/person.png"
-            title="Secure & Private"
-          />
-        </div>
-
-        <div className="mt-auto pt-5 lg:flex lg:min-h-0 lg:flex-1 lg:items-center lg:justify-center lg:pt-0">
-          <div className="relative mx-auto mt-1 flex h-[250px] w-full max-w-[440px] items-center justify-center md:h-[270px] md:max-w-[500px] lg:h-[clamp(300px,42vh,400px)] lg:max-w-[680px] xl:h-[clamp(360px,46vh,480px)] xl:max-w-[760px]">
-            <Image
-              alt="Arvisha member dashboard preview"
-              className="h-full w-full object-contain object-bottom"
-              height={1282}
-              sizes="(max-width: 767px) 92vw, (max-width: 1023px) 80vw, (max-width: 1279px) 48vw, 760px"
-              src="/images/laptop1.png"
-              width={1227}
-            />
-          </div>
-        </div>
-
-        <footer className="mt-2 flex items-center gap-3 border-t border-primary-100/80 pt-3 text-xs text-[#7890b5] md:mt-3 md:pt-4 xl:gap-4">
-          <ArvishaLogo compact />
-          <span className="h-5 w-px bg-primary-200" />
-          <span>© 2025 Arvisha. All rights reserved.</span>
-        </footer>
-      </div>
-    </section>
   );
 }
 
@@ -153,7 +62,7 @@ function getClientErrors({ confirmPassword, email, fullName, password, termsAcce
   return errors;
 }
 
-function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, type, value }) {
+function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, type, value, helperText }) {
   const errorId = `${id}-error`;
 
   return (
@@ -161,6 +70,9 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
       <label className="text-sm font-semibold text-[#142447]" htmlFor={id}>
         {label}
       </label>
+      {helperText ? (
+        <p className="mt-1 text-xs text-[#6f87ad]">{helperText}</p>
+      ) : null}
       <div className="relative mt-3">
         <Icon
           aria-hidden="true"
@@ -172,9 +84,8 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
           aria-describedby={error ? errorId : undefined}
           aria-invalid={Boolean(error)}
           autoComplete={name === "fullName" ? "name" : "email"}
-          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
-            error ? "border-red-300" : "border-[#d7e2f0]"
-          }`}
+          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${error ? "border-red-300" : "border-[#d7e2f0]"
+            }`}
           id={id}
           name={name}
           onChange={(event) => onChange(event.target.value)}
@@ -237,22 +148,41 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white text-[#142447] lg:h-dvh lg:min-h-0 lg:overflow-hidden">
-      <div className="flex min-h-screen flex-col lg:h-dvh lg:min-h-0 lg:flex-row">
-        <MarketingPanel />
+    <main className="relative min-h-dvh overflow-hidden bg-[#f5faff] text-[#142447]">
+      <Image
+        src="/images/bgeffect.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="pointer-events-none object-cover"
+      />
 
-        <section className="flex flex-1 items-center justify-center bg-white px-5 py-10 md:px-12 md:py-14 lg:h-dvh lg:min-h-0 lg:w-1/2 lg:overflow-y-auto lg:px-10 lg:py-8 xl:px-14 xl:py-10 2xl:px-20">
-          <div className="w-full max-w-[540px]">
-            <p className="text-base font-medium text-[#6f87ad]">Create your account</p>
-            <h2 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[#142447] md:text-3xl lg:text-[1.85rem] xl:text-[2rem] 2xl:text-[2.1rem]">
-              Join Arvisha today
-            </h2>
-            <p className="mt-2 text-sm text-[#6f87ad] md:text-base xl:text-[1.05rem]">
-              Fill in your details to get started.
-            </p>
+      <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-6 sm:px-6 sm:py-8 lg:py-4">
+        <section className="w-full max-w-[560px] rounded-[2rem] border border-white/80 bg-white/95 px-5 py-7 shadow-[0_24px_70px_rgba(62,113,190,0.14)] backdrop-blur-sm sm:px-10 sm:py-9 lg:px-12 lg:py-7">
 
-            {state.success ? (
-              <div className="mt-8 rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-6 text-center" role="status">
+          <div className="flex justify-center">
+            <ArvishaLogo />
+          </div>
+
+          {!state.success && (
+            <div className="mt-6 text-center sm:mt-7 lg:mt-5">
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
+                <UserRound aria-hidden="true" size={14} strokeWidth={2} />
+                Create your account
+              </div>
+              <h1 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-[#142447] sm:text-[2.15rem] lg:mt-3 lg:text-[1.9rem]">
+                Join ARVISHA today
+              </h1>
+              <p className="mx-auto mt-2 max-w-[410px] text-sm leading-6 text-[#6f87ad] sm:text-base lg:mt-1.5">
+                Fill in your details to get started.
+              </p>
+            </div>
+          )}
+
+          {state.success ? (
+            <div className="mt-6 text-center sm:mt-7 lg:mt-5">
+              <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-6" role="status">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-primary-600">
                   <Mail aria-hidden="true" size={23} />
                 </div>
@@ -268,118 +198,113 @@ export default function RegisterPage() {
                   <ArrowRight aria-hidden="true" size={17} />
                 </Link>
               </div>
-            ) : (
-              <form action={formAction} className="mt-7 space-y-5 xl:mt-8" noValidate onSubmit={handleSubmit}>
-                {state.formError ? (
-                  <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700" role="alert">
-                    {state.formError}
-                  </div>
-                ) : null}
-
-                <TextField
-                  error={getError("fullName")}
-                  icon={UserRound}
-                  id="register-full-name"
-                  label="Full name"
-                  name="fullName"
-                  onChange={updateField(setFullName, "fullName")}
-                  placeholder="e.g. Natasya Desinta Swantara"
-                  type="text"
-                  value={fullName}
-                />
-                <TextField
-                  error={getError("email")}
-                  icon={Mail}
-                  id="register-email"
-                  label="Email address"
-                  name="email"
-                  onChange={updateField(setEmail, "email")}
-                  placeholder="e.g. you@example.com"
-                  type="email"
-                  value={email}
-                />
-                <PasswordField
-                  autoComplete="new-password"
-                  error={getError("password")}
-                  id="register-password"
-                  label="Password"
-                  name="password"
-                  onChange={updateField(setPassword, "password")}
-                  onToggle={() => setShowPassword((visible) => !visible)}
-                  placeholder="Create a password"
-                  value={password}
-                  visible={showPassword}
-                />
-                <PasswordField
-                  autoComplete="new-password"
-                  error={getError("confirmPassword")}
-                  id="register-confirm-password"
-                  label="Confirm password"
-                  name="confirmPassword"
-                  onChange={updateField(setConfirmPassword, "confirmPassword")}
-                  onToggle={() => setShowConfirmPassword((visible) => !visible)}
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  visible={showConfirmPassword}
-                />
-
-                <div>
-                  <label className="flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#6f87ad]" htmlFor="terms-accepted">
-                    <input
-                      aria-describedby={getError("termsAccepted") ? "terms-error" : undefined}
-                      aria-invalid={Boolean(getError("termsAccepted"))}
-                      checked={termsAccepted}
-                      className="mt-1 h-5 w-5 shrink-0 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
-                      id="terms-accepted"
-                      name="termsAccepted"
-                      onChange={(event) => {
-                        setTermsAccepted(event.target.checked);
-                        setClientErrors((current) => ({ ...current, termsAccepted: "" }));
-                      }}
-                      type="checkbox"
-                      value="true"
-                    />
-                    <span>
-                      I agree to the <span className="font-medium text-primary-600">Terms &amp; Conditions</span> and <span className="font-medium text-primary-600">Privacy Policy</span>
-                    </span>
-                  </label>
-                  {getError("termsAccepted") ? (
-                    <p className="mt-2 text-sm text-red-600" id="terms-error">
-                      {getError("termsAccepted")}
-                    </p>
-                  ) : null}
+            </div>
+          ) : (
+            <form action={formAction} className="mt-5 space-y-4 lg:mt-4 lg:space-y-3" noValidate onSubmit={handleSubmit}>
+              {state.formError ? (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700" role="alert">
+                  {state.formError}
                 </div>
+              ) : null}
 
-                <button
-                  className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
-                  disabled={isPending}
-                  type="submit"
-                >
-                  {isPending ? (
-                    <>
-                      <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
-                      Creating account...
-                    </>
-                  ) : (
-                    <>
-                      Create account
-                      <ArrowRight aria-hidden="true" size={20} />
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
+              <TextField
+                error={getError("fullName")}
+                icon={UserRound}
+                id="register-full-name"
+                label="Full name"
+                name="fullName"
+                onChange={updateField(setFullName, "fullName")}
+                placeholder="e.g. Natasya Desinta Swantara"
+                type="text"
+                value={fullName}
+              />
+              <TextField
+                error={getError("email")}
+                icon={Mail}
+                id="register-email"
+                label="Email address"
+                name="email"
+                helperText="Pastikan email sama dengan yang digunakan waktu pembelian."
+                onChange={updateField(setEmail, "email")}
+                placeholder="e.g. you@example.com"
+                type="email"
+                value={email}
+              />
+              <PasswordField
+                autoComplete="new-password"
+                error={getError("password")}
+                id="register-password"
+                label="Password"
+                name="password"
+                onChange={updateField(setPassword, "password")}
+                onToggle={() => setShowPassword((visible) => !visible)}
+                placeholder="Create a password"
+                value={password}
+                visible={showPassword}
+              />
+              <PasswordField
+                autoComplete="new-password"
+                error={getError("confirmPassword")}
+                id="register-confirm-password"
+                label="Confirm password"
+                name="confirmPassword"
+                onChange={updateField(setConfirmPassword, "confirmPassword")}
+                onToggle={() => setShowConfirmPassword((visible) => !visible)}
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                visible={showConfirmPassword}
+              />
 
-            {!state.success ? (
-              <div className="mt-7 flex items-center gap-5 text-sm text-[#6f87ad] xl:mt-8">
-                <span className="h-px flex-1 bg-[#d7e2f0]" />
-                <span>or</span>
-                <span className="h-px flex-1 bg-[#d7e2f0]" />
+              <div>
+                <label className="flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#6f87ad]" htmlFor="terms-accepted">
+                  <input
+                    aria-describedby={getError("termsAccepted") ? "terms-error" : undefined}
+                    aria-invalid={Boolean(getError("termsAccepted"))}
+                    checked={termsAccepted}
+                    className="mt-1 h-5 w-5 shrink-0 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
+                    id="terms-accepted"
+                    name="termsAccepted"
+                    onChange={(event) => {
+                      setTermsAccepted(event.target.checked);
+                      setClientErrors((current) => ({ ...current, termsAccepted: "" }));
+                    }}
+                    type="checkbox"
+                    value="true"
+                  />
+                  <span>
+                    I agree to the <span className="font-medium text-primary-600">Terms &amp; Conditions</span> and <span className="font-medium text-primary-600">Privacy Policy</span>
+                  </span>
+                </label>
+                {getError("termsAccepted") ? (
+                  <p className="mt-2 text-sm text-red-600" id="terms-error">
+                    {getError("termsAccepted")}
+                  </p>
+                ) : null}
               </div>
-            ) : null}
 
-            {!state.success ? (
-              <p className="mt-7 text-center text-sm text-[#6f87ad]">
+              <button
+                className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
+                disabled={isPending}
+                type="submit"
+              >
+                {isPending ? (
+                  <>
+                    <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
+                    Creating account...
+                  </>
+                ) : (
+                  <>
+                    Create account
+                    <ArrowRight aria-hidden="true" size={20} />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {!state.success && (
+            <div className="mt-5 text-center text-sm text-[#6f87ad] lg:mt-4">
+              <p>
                 Already have an account?{" "}
                 <Link
                   className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
@@ -388,8 +313,8 @@ export default function RegisterPage() {
                   Login here
                 </Link>
               </p>
-            ) : null}
-          </div>
+            </div>
+          )}
         </section>
       </div>
     </main>
