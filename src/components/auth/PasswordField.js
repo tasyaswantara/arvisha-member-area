@@ -30,7 +30,7 @@ export default function PasswordField({
           aria-describedby={error ? errorId : undefined}
           aria-invalid={Boolean(error)}
           autoComplete={autoComplete}
-          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-14 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-blue-500 focus:ring-4 focus:ring-blue-100 ${
+          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-14 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
             error ? "border-red-300" : "border-[#d7e2f0]"
           }`}
           id={id}
@@ -43,7 +43,7 @@ export default function PasswordField({
         />
         <button
           aria-label={visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
-          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#7890b5] transition hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#7890b5] transition hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200"
           onClick={onToggle}
           type="button"
         >

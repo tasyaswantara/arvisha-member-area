@@ -72,7 +72,7 @@ export default function ForgotPasswordPage() {
         <>
           Remember your password?{" "}
           <Link
-            className="rounded-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/login"
           >
             Back to login
@@ -84,7 +84,7 @@ export default function ForgotPasswordPage() {
       {isSuccess ? (
         <div
           aria-live="polite"
-          className="mt-8 rounded-2xl border border-blue-100 bg-blue-50/70 px-5 py-5 text-center text-sm leading-6 text-[#55719d]"
+          className="mt-8 rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-5 text-center text-sm leading-6 text-[#55719d]"
         >
           If an account exists for this email, we&apos;ve sent a password reset link.
         </div>
@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
                 aria-describedby={fieldError ? "reset-email-error" : undefined}
                 aria-invalid={Boolean(fieldError)}
                 autoComplete="email"
-                className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-blue-500 focus:ring-4 focus:ring-blue-100 ${
+                className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
                   fieldError ? "border-red-300" : "border-[#d7e2f0]"
                 }`}
                 id="reset-email"
@@ -138,7 +138,7 @@ export default function ForgotPasswordPage() {
           </div>
 
           <button
-            className="mt-6 flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-5 text-base font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-70"
+            className="mt-6 flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
             disabled={isLoading}
             type="submit"
           >

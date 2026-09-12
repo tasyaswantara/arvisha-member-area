@@ -64,14 +64,14 @@ function MarketingPanel() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-[700px] flex-col lg:min-h-0 lg:flex-1">
         <div className="mt-5 md:mt-6 lg:mt-4 xl:mt-5 2xl:mt-6">
-          <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/80 px-3 py-1.5 text-xs font-semibold text-blue-600 shadow-sm shadow-blue-100">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
             <UserRound aria-hidden="true" size={14} strokeWidth={2} />
             Create your account
           </div>
           <h1 className="mt-3 max-w-[520px] text-3xl font-bold leading-[1.04] tracking-[-0.045em] text-[#142447] md:text-4xl lg:text-[2.5rem] xl:text-[2.75rem] 2xl:text-[2.8rem]">
             Get started with
             <br />
-            <span className="text-blue-600">Arvisha</span>
+            <span className="text-primary-600">Arvisha</span>
           </h1>
           <p className="mt-3 max-w-[470px] text-sm leading-6 text-[#6f87ad] md:text-[15px] md:leading-6 xl:text-base">
             Join us and manage your products, access your content,
@@ -110,9 +110,9 @@ function MarketingPanel() {
           </div>
         </div>
 
-        <footer className="mt-2 flex items-center gap-3 border-t border-blue-100/80 pt-3 text-xs text-[#7890b5] md:mt-3 md:pt-4 xl:gap-4">
+        <footer className="mt-2 flex items-center gap-3 border-t border-primary-100/80 pt-3 text-xs text-[#7890b5] md:mt-3 md:pt-4 xl:gap-4">
           <ArvishaLogo compact />
-          <span className="h-5 w-px bg-blue-200" />
+          <span className="h-5 w-px bg-primary-200" />
           <span>© 2025 Arvisha. All rights reserved.</span>
         </footer>
       </div>
@@ -172,7 +172,7 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
           aria-describedby={error ? errorId : undefined}
           aria-invalid={Boolean(error)}
           autoComplete={name === "fullName" ? "name" : "email"}
-          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-blue-500 focus:ring-4 focus:ring-blue-100 ${
+          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
             error ? "border-red-300" : "border-[#d7e2f0]"
           }`}
           id={id}
@@ -252,8 +252,8 @@ export default function RegisterPage() {
             </p>
 
             {state.success ? (
-              <div className="mt-8 rounded-2xl border border-blue-100 bg-blue-50/70 px-5 py-6 text-center" role="status">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+              <div className="mt-8 rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-6 text-center" role="status">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-primary-600">
                   <Mail aria-hidden="true" size={23} />
                 </div>
                 <h3 className="mt-4 text-xl font-bold text-[#142447]">Check your email</h3>
@@ -261,7 +261,7 @@ export default function RegisterPage() {
                   We&apos;ve created your Arvisha account. Please check your inbox and verify your email before logging in.
                 </p>
                 <Link
-                  className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
                   href="/login"
                 >
                   Back to login
@@ -329,7 +329,7 @@ export default function RegisterPage() {
                       aria-describedby={getError("termsAccepted") ? "terms-error" : undefined}
                       aria-invalid={Boolean(getError("termsAccepted"))}
                       checked={termsAccepted}
-                      className="mt-1 h-5 w-5 shrink-0 rounded border-[#b7c8df] text-blue-600 accent-blue-600 focus:ring-2 focus:ring-blue-200"
+                      className="mt-1 h-5 w-5 shrink-0 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
                       id="terms-accepted"
                       name="termsAccepted"
                       onChange={(event) => {
@@ -340,7 +340,7 @@ export default function RegisterPage() {
                       value="true"
                     />
                     <span>
-                      I agree to the <span className="font-medium text-blue-600">Terms &amp; Conditions</span> and <span className="font-medium text-blue-600">Privacy Policy</span>
+                      I agree to the <span className="font-medium text-primary-600">Terms &amp; Conditions</span> and <span className="font-medium text-primary-600">Privacy Policy</span>
                     </span>
                   </label>
                   {getError("termsAccepted") ? (
@@ -351,7 +351,7 @@ export default function RegisterPage() {
                 </div>
 
                 <button
-                  className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-5 text-base font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
                   disabled={isPending}
                   type="submit"
                 >
@@ -382,7 +382,7 @@ export default function RegisterPage() {
               <p className="mt-7 text-center text-sm text-[#6f87ad]">
                 Already have an account?{" "}
                 <Link
-                  className="rounded-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
                   href="/login"
                 >
                   Login here

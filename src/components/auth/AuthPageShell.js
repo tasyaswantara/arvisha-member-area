@@ -34,7 +34,7 @@ export default function AuthPageShell({
           </div>
 
           <div className="mt-8 text-center sm:mt-9">
-            <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/80 px-3 py-1.5 text-xs font-semibold text-blue-600 shadow-sm shadow-blue-100">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
               <LockKeyhole aria-hidden="true" size={14} strokeWidth={2} />
               Member Area
             </div>

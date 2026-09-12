@@ -4,6 +4,20 @@
   color-scheme: light;
 }
 
+@theme {
+  --color-primary-50: #f2f2f7;
+  --color-primary-100: #e0dff0;
+  --color-primary-200: #c2c0e3;
+  --color-primary-300: #9893cf;
+  --color-primary-400: #6d66b9;
+  --color-primary-500: #4941a3;
+  --color-primary-600: #110D58; /* Main theme color */
+  --color-primary-700: #0d0a46; /* Hover state */
+  --color-primary-800: #0a0836;
+  --color-primary-900: #070626;
+  --color-primary-950: #040316;
+}
+
 * {
   box-sizing: border-box;
 }

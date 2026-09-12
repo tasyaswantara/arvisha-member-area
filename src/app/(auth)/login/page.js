@@ -81,14 +81,14 @@ function MarketingPanel() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-[700px] flex-col lg:min-h-0 lg:flex-1">
         <div className="mt-5 md:mt-6 lg:mt-4 xl:mt-5 2xl:mt-6">
-          <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/80 px-3 py-1.5 text-xs font-semibold text-blue-600 shadow-sm shadow-blue-100">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
             <LockKeyhole size={14} strokeWidth={2} />
             Member Area
           </div>
           <h1 className="mt-3 max-w-[520px] text-3xl font-bold leading-[1.04] tracking-[-0.045em] text-[#142447] md:text-4xl lg:text-[2.5rem] xl:text-[2.75rem] 2xl:text-[2.8rem]">
             Welcome back,
             <br />
-            to <span className="text-blue-600">Arvisha</span>
+            to <span className="text-primary-600">Arvisha</span>
           </h1>
           <p className="mt-3 max-w-[470px] text-sm leading-6 text-[#6f87ad] md:text-[15px] md:leading-6 xl:text-base">
             Manage your products, access your content,
@@ -118,9 +118,9 @@ function MarketingPanel() {
           <LaptopMockup />
         </div>
 
-        <footer className="mt-2 flex items-center gap-3 border-t border-blue-100/80 pt-3 text-xs text-[#7890b5] md:mt-3 md:pt-4 xl:gap-4">
+        <footer className="mt-2 flex items-center gap-3 border-t border-primary-100/80 pt-3 text-xs text-[#7890b5] md:mt-3 md:pt-4 xl:gap-4">
           <ArvishaLogo compact />
-          <span className="h-5 w-px bg-blue-200" />
+          <span className="h-5 w-px bg-primary-200" />
           <span>© 2025 Arvisha. All rights reserved.</span>
         </footer>
       </div>
@@ -257,7 +257,7 @@ export default function LoginPage() {
                   />
                   <input
                     autoComplete="email"
-                    className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-blue-500 focus:ring-4 focus:ring-blue-100 ${
+                    className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
                       fieldErrors.email ? "border-red-300" : "border-[#d7e2f0]"
                     }`}
                     id="email"
@@ -290,7 +290,7 @@ export default function LoginPage() {
                   />
                   <input
                     autoComplete="current-password"
-                    className={`h-14 w-full rounded-xl border bg-white pl-14 pr-14 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-blue-500 focus:ring-4 focus:ring-blue-100 ${
+                    className={`h-14 w-full rounded-xl border bg-white pl-14 pr-14 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
                       fieldErrors.password ? "border-red-300" : "border-[#d7e2f0]"
                     }`}
                     id="password"
@@ -304,7 +304,7 @@ export default function LoginPage() {
                   />
                   <button
                     aria-label={showPassword ? "Hide password" : "Show password"}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#7890b5] transition hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#7890b5] transition hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200"
                     onClick={() => setShowPassword((visible) => !visible)}
                     type="button"
                   >
@@ -322,14 +322,14 @@ export default function LoginPage() {
                 <label className="flex cursor-pointer items-center gap-3 text-sm text-[#6f87ad]">
                   <input
                     checked={rememberMe}
-                    className="h-5 w-5 rounded border-[#b7c8df] text-blue-600 accent-blue-600 focus:ring-2 focus:ring-blue-200"
+                    className="h-5 w-5 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
                     onChange={(event) => setRememberMe(event.target.checked)}
                     type="checkbox"
                   />
                   Remember me
                 </label>
                 <Link
-                  className="text-sm font-semibold text-blue-600 transition hover:text-blue-700"
+                  className="text-sm font-semibold text-primary-600 transition hover:text-primary-700"
                   href="/forgot-password"
                 >
                   Forgot password?
@@ -337,7 +337,7 @@ export default function LoginPage() {
               </div>
 
               <button
-                className="mt-6 flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-5 text-base font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-70"
+                className="mt-6 flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
                 disabled={isLoading}
                 type="submit"
               >
@@ -363,7 +363,7 @@ export default function LoginPage() {
 
             <p className="mt-7 text-center text-sm text-[#6f87ad] xl:mt-8">
               Don&apos;t have an account?{" "}
-              <Link className="font-semibold text-blue-600 hover:text-blue-700" href="/register">
+              <Link className="font-semibold text-primary-600 hover:text-primary-700" href="/register">
                 Register here
               </Link>
             </p>

@@ -126,7 +126,7 @@ export default function UpdatePasswordPage() {
         <>
           Need a new reset link?{" "}
           <Link
-            className="rounded-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/forgot-password"
           >
             Request another
@@ -137,11 +137,11 @@ export default function UpdatePasswordPage() {
     >
       {isSuccess ? (
         <div aria-live="polite" className="mt-8 text-center">
-          <div className="rounded-2xl border border-blue-100 bg-blue-50/70 px-5 py-5 text-sm leading-6 text-[#55719d]">
+          <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-5 text-sm leading-6 text-[#55719d]">
             Your password has been updated. Redirecting you to login...
           </div>
           <Link
-            className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/login"
           >
             Go to login now
@@ -185,7 +185,7 @@ export default function UpdatePasswordPage() {
           />
 
           <button
-            className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-5 text-base font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-70"
+            className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
             disabled={isLoading}
             type="submit"
           >

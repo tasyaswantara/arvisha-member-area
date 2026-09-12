@@ -24,7 +24,7 @@ function createDashboardStats(productData) {
       value: ownedCount,
       description: hasLiveData ? `Out of ${totalCount} total active products` : "Live product data unavailable",
       icon: Package,
-      iconClassName: "bg-blue-50 text-blue-600",
+      iconClassName: "bg-primary-50 text-primary-600",
     },
     {
       title: "Available Access",
@@ -59,7 +59,7 @@ function ArvishaLogo() {
 
 function StatCard({ title, value, description, icon: Icon, iconClassName }) {
   return (
-    <article className="flex items-center gap-4 rounded-2xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_30px_rgba(50,103,172,0.07)] sm:p-6">
+    <article className="flex items-center gap-4 rounded-2xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_30px_rgba(50,103,172,0.07)] sm:p-6">
       <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${iconClassName}`}>
         <Icon size={27} strokeWidth={1.8} aria-hidden="true" />
       </div>
@@ -82,7 +82,7 @@ function SectionHeading({ title, description, href = "/member/products" }) {
       </div>
       <Link
         href={href}
-        className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
+        className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-4"
       >
         View all products
         <ArrowRight size={16} aria-hidden="true" />
@@ -93,20 +93,20 @@ function SectionHeading({ title, description, href = "/member/products" }) {
 
 function DashboardHeader() {
   return (
-    <header className="border-b border-blue-100/70 bg-white/95 backdrop-blur">
+    <header className="border-b border-primary-100/70 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[72px] max-w-[1376px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12">
         <div className="flex min-w-0 items-center gap-8 lg:gap-12">
-          <Link href="/member/dashboard" className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4">
+          <Link href="/member/dashboard" className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-4">
             <ArvishaLogo />
           </Link>
           <nav className="hidden items-center gap-8 text-sm font-medium text-[#6680aa] md:flex lg:gap-10" aria-label="Main navigation">
-            <Link href="/member/dashboard" className="relative py-7 text-blue-600 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-blue-500">
+            <Link href="/member/dashboard" className="relative py-7 text-primary-600 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary-500">
               Dashboard
             </Link>
-            <Link href="/member/products" className="py-7 transition hover:text-blue-600">
+            <Link href="/member/products" className="py-7 transition hover:text-primary-600">
               Products
             </Link>
-            <a href="#help" className="py-7 transition hover:text-blue-600">
+            <a href="#help" className="py-7 transition hover:text-primary-600">
               Help
             </a>
           </nav>
@@ -116,17 +116,17 @@ function DashboardHeader() {
           <button
             type="button"
             aria-label="Notifications"
-            className="relative rounded-full p-2 text-[#6f87ad] transition hover:bg-blue-50 hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="relative rounded-full p-2 text-[#6f87ad] transition hover:bg-primary-50 hover:text-primary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >
             <Bell size={20} strokeWidth={1.8} aria-hidden="true" />
-            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" aria-hidden="true" />
+            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-primary-500" aria-hidden="true" />
           </button>
-          <div className="hidden h-7 w-px bg-blue-100 sm:block" aria-hidden="true" />
+          <div className="hidden h-7 w-px bg-primary-100 sm:block" aria-hidden="true" />
           <button
             type="button"
             aria-label="Open account menu"
             aria-expanded="false"
-            className="hidden items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-[#395782] transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:flex"
+            className="hidden items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-[#395782] transition hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:flex"
           >
             Natasya Desinta
             <ChevronDown size={16} aria-hidden="true" />
@@ -134,7 +134,7 @@ function DashboardHeader() {
           <form action="/auth/signout" method="post">
             <button
               type="submit"
-              className="rounded-lg border border-blue-200 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
+              className="rounded-lg border border-primary-200 px-3 py-2 text-xs font-semibold text-primary-600 transition hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
             >
               Logout
             </button>
@@ -167,7 +167,7 @@ export default async function MemberDashboardPage() {
           />
           <div className="relative mx-auto grid max-w-[1376px] items-center gap-8 px-5 pb-8 pt-10 sm:px-8 sm:pt-14 lg:grid-cols-[0.8fr_1.2fr] lg:px-10 lg:pb-10 lg:pt-16 xl:px-12">
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/80 px-3 py-1.5 text-xs font-semibold text-blue-600 shadow-sm shadow-blue-100">
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100">
                 <UserRound size={14} strokeWidth={2} aria-hidden="true" />
                 Member Area
               </div>
@@ -182,7 +182,7 @@ export default async function MemberDashboardPage() {
               </p>
               <Link
                 href="/member/products"
-                className="mt-7 inline-flex items-center gap-3 rounded-full bg-blue-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="mt-7 inline-flex items-center gap-3 rounded-full bg-primary-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
                 Explore Products
                 <ArrowRight size={18} aria-hidden="true" />
@@ -208,7 +208,7 @@ export default async function MemberDashboardPage() {
             ))}
           </section>
 
-          <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+          <section className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
             <SectionHeading
               title="Your Products"
               description="Access your purchased products and manage your content."
@@ -220,7 +220,7 @@ export default async function MemberDashboardPage() {
                 ))}
               </div>
             ) : (
-              <div className="mt-7 rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-5 py-8 text-center">
+              <div className="mt-7 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center">
                 <p className="text-sm text-[#6f87ad]">
                   {productData.status === "success"
                     ? "You do not have any active products yet."
@@ -228,7 +228,7 @@ export default async function MemberDashboardPage() {
                 </p>
                 <Link
                   href="/member/products"
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-4"
                 >
                   Explore Products
                   <ArrowRight size={16} aria-hidden="true" />
@@ -237,7 +237,7 @@ export default async function MemberDashboardPage() {
             )}
           </section>
 
-          <section id="help" className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
             <SectionHeading
               title="Recommended for You"
               description="Explore active products you have not purchased yet."
@@ -249,7 +249,7 @@ export default async function MemberDashboardPage() {
                 ))}
               </div>
             ) : (
-              <p className="mt-7 rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
+              <p className="mt-7 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
                 {productData.status === "success"
                   ? "No additional active products are available right now."
                   : "Live product data is currently unavailable."}
@@ -259,7 +259,7 @@ export default async function MemberDashboardPage() {
         </div>
       </main>
 
-      <footer className="border-t border-blue-100/70 bg-white">
+      <footer className="border-t border-primary-100/70 bg-white">
         <div className="mx-auto flex max-w-[1376px] flex-col gap-4 px-5 py-6 text-xs text-[#7890b5] sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10 xl:px-12">
           <div className="flex items-center gap-3">
             <Image
@@ -270,13 +270,13 @@ export default async function MemberDashboardPage() {
               sizes="92px"
               className="h-auto w-[92px] object-contain object-left"
             />
-            <span className="h-5 w-px bg-blue-200" aria-hidden="true" />
+            <span className="h-5 w-px bg-primary-200" aria-hidden="true" />
             <span>© 2025 Arvisha. All rights reserved.</span>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer navigation">
-            <a href="#terms" className="transition hover:text-blue-600">Terms of Service</a>
-            <a href="#privacy" className="transition hover:text-blue-600">Privacy Policy</a>
-            <a href="#help" className="transition hover:text-blue-600">Help</a>
+            <a href="#terms" className="transition hover:text-primary-600">Terms of Service</a>
+            <a href="#privacy" className="transition hover:text-primary-600">Privacy Policy</a>
+            <a href="#help" className="transition hover:text-primary-600">Help</a>
           </nav>
         </div>
       </footer>
