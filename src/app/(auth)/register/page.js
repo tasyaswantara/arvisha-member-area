@@ -19,10 +19,10 @@ function ArvishaLogo({ compact = false }) {
   return (
     <Image
       alt="Arvisha"
-      className={`${compact ? "w-[92px]" : "w-[145px] md:w-[160px] lg:w-[178px]"} h-auto object-contain`}
+      className={`${compact ? "w-[92px]" : "h-[5.5vh]"} w-auto object-contain`}
       height={724}
       priority={!compact}
-      sizes={compact ? "92px" : "(max-width: 767px) 145px, (max-width: 1023px) 160px, 178px"}
+      sizes={compact ? "92px" : "150px"}
       src="/images/logotext horizontal.png"
       width={2172}
     />
@@ -67,24 +67,23 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
 
   return (
     <div>
-      <label className="text-sm font-semibold text-[#142447]" htmlFor={id}>
+      <label className="text-[1.5vh] font-semibold text-[#142447]" htmlFor={id}>
         {label}
       </label>
       {helperText ? (
-        <p className="mt-1 text-xs text-[#6f87ad]">{helperText}</p>
+        <p className="mt-[0.5vh] text-[1.2vh] text-[#6f87ad]">{helperText}</p>
       ) : null}
-      <div className="relative mt-2 lg:mt-2">
+      <div className="relative mt-[1vh]">
         <Icon
           aria-hidden="true"
-          className="absolute left-5 top-1/2 -translate-y-1/2 text-[#7890b5] lg:left-4"
-          size={21}
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7890b5] h-[2vh] w-[2vh]"
           strokeWidth={1.8}
         />
         <input
           aria-describedby={error ? errorId : undefined}
           aria-invalid={Boolean(error)}
           autoComplete={name === "fullName" ? "name" : "email"}
-          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 lg:h-11 lg:rounded-lg lg:pl-12 lg:text-sm ${error ? "border-red-300" : "border-[#d7e2f0]"
+          className={`h-[5.5vh] w-full rounded-xl border bg-white pl-[4.5vh] pr-[2vh] text-[1.6vh] text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${error ? "border-red-300" : "border-[#d7e2f0]"
             }`}
           id={id}
           name={name}
@@ -96,7 +95,7 @@ function TextField({ error, icon: Icon, id, label, name, onChange, placeholder, 
         />
       </div>
       {error ? (
-        <p className="mt-2 text-sm text-red-600" id={errorId}>
+        <p className="mt-[1vh] text-[1.4vh] text-red-600" id={errorId}>
           {error}
         </p>
       ) : null}
@@ -166,43 +165,43 @@ export default function RegisterPage() {
           </div>
 
           {!state.success && (
-            <div className="mt-6 text-center sm:mt-7 lg:mt-3">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary-100/80 px-3 py-1.5 text-xs font-semibold text-primary-600 shadow-sm shadow-primary-100 lg:hidden">
-                <UserRound aria-hidden="true" size={14} strokeWidth={2} />
+            <div className="mt-[2.5vh] text-center">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-primary-100/80 px-2.5 py-1 text-[1.2vh] font-semibold text-primary-600 shadow-sm shadow-primary-100 lg:hidden">
+                <UserRound aria-hidden="true" className="h-[1.5vh] w-[1.5vh]" strokeWidth={2} />
                 Create your account
               </div>
-              <h1 className="mt-4 text-3xl font-bold tracking-[-0.04em] text-[#142447] sm:text-[2.15rem] lg:mt-0 lg:text-[1.65rem]">
+              <h1 className="mt-[1vh] text-[3.2vh] font-bold tracking-[-0.04em] text-[#142447] lg:mt-0">
                 Join ARVISHA today
               </h1>
-              <p className="mx-auto mt-2 max-w-[410px] text-sm leading-6 text-[#6f87ad] sm:text-base lg:hidden">
+              <p className="mx-auto mt-[0.5vh] max-w-[410px] text-[1.4vh] leading-6 text-[#6f87ad] lg:hidden">
                 Fill in your details to get started.
               </p>
             </div>
           )}
 
           {state.success ? (
-            <div className="mt-6 text-center sm:mt-7 lg:mt-5">
-              <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-6" role="status">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-primary-600">
-                  <Mail aria-hidden="true" size={23} />
+            <div className="mt-[2.5vh] text-center">
+              <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-[3vh]" role="status">
+                <div className="mx-auto flex h-[5vh] w-[5vh] items-center justify-center rounded-full bg-primary-100 text-primary-600">
+                  <Mail aria-hidden="true" className="h-[2.5vh] w-[2.5vh]" />
                 </div>
-                <h3 className="mt-4 text-xl font-bold text-[#142447]">Check your email</h3>
-                <p className="mt-2 text-sm leading-6 text-[#55719d]">
+                <h3 className="mt-[2vh] text-[2vh] font-bold text-[#142447]">Check your email</h3>
+                <p className="mt-[1vh] text-[1.4vh] leading-relaxed text-[#55719d]">
                   We&apos;ve created your Arvisha account. Please check your inbox and verify your email before logging in.
                 </p>
                 <Link
-                  className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                  className="mt-[2.5vh] inline-flex items-center gap-2 rounded-sm text-[1.4vh] font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
                   href="/login"
                 >
                   Back to login
-                  <ArrowRight aria-hidden="true" size={17} />
+                  <ArrowRight aria-hidden="true" className="h-[2vh] w-[2vh]" />
                 </Link>
               </div>
             </div>
           ) : (
-            <form action={formAction} className="mt-5 space-y-4 lg:mt-3 lg:space-y-2.5" noValidate onSubmit={handleSubmit}>
+            <form action={formAction} className="mt-[2vh] space-y-[1.5vh]" noValidate onSubmit={handleSubmit}>
               {state.formError ? (
-                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700" role="alert">
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-[1vh] text-[1.4vh] leading-relaxed text-red-700" role="alert">
                   {state.formError}
                 </div>
               ) : null}
@@ -256,12 +255,12 @@ export default function RegisterPage() {
               />
 
               <div>
-                <label className="flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#6f87ad]" htmlFor="terms-accepted">
+                <label className="flex cursor-pointer items-start gap-2.5 text-[1.4vh] leading-relaxed text-[#6f87ad]" htmlFor="terms-accepted">
                   <input
                     aria-describedby={getError("termsAccepted") ? "terms-error" : undefined}
                     aria-invalid={Boolean(getError("termsAccepted"))}
                     checked={termsAccepted}
-                    className="mt-1 h-5 w-5 shrink-0 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
+                    className="mt-[0.3vh] h-[2vh] w-[2vh] shrink-0 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
                     id="terms-accepted"
                     name="termsAccepted"
                     onChange={(event) => {
@@ -276,26 +275,26 @@ export default function RegisterPage() {
                   </span>
                 </label>
                 {getError("termsAccepted") ? (
-                  <p className="mt-2 text-sm text-red-600" id="terms-error">
+                  <p className="mt-[1vh] text-[1.4vh] text-red-600" id="terms-error">
                     {getError("termsAccepted")}
                   </p>
                 ) : null}
               </div>
 
               <button
-                className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70 lg:h-11 lg:rounded-lg lg:text-sm"
+                className="mt-[1.5vh] flex h-[5.5vh] w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 text-[1.6vh] font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
                 disabled={isPending}
                 type="submit"
               >
                 {isPending ? (
                   <>
-                    <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
+                    <LoaderCircle aria-hidden="true" className="animate-spin h-[2vh] w-[2vh]" />
                     Creating account...
                   </>
                 ) : (
                   <>
                     Create account
-                    <ArrowRight aria-hidden="true" size={20} />
+                    <ArrowRight aria-hidden="true" className="h-[2vh] w-[2vh]" />
                   </>
                 )}
               </button>
@@ -303,7 +302,7 @@ export default function RegisterPage() {
           )}
 
           {!state.success && (
-            <div className="mt-5 text-center text-sm text-[#6f87ad] lg:mt-3">
+            <div className="mt-[2.5vh] text-center text-[1.4vh] text-[#6f87ad]">
               <p>
                 Already have an account?{" "}
                 <Link

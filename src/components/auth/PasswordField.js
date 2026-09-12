@@ -16,21 +16,20 @@ export default function PasswordField({
 
   return (
     <div>
-      <label className="text-sm font-semibold text-[#142447]" htmlFor={id}>
+      <label className="text-[1.5vh] font-semibold text-[#142447]" htmlFor={id}>
         {label}
       </label>
-      <div className="relative mt-3">
+      <div className="relative mt-[1vh]">
         <LockKeyhole
           aria-hidden="true"
-          className="absolute left-5 top-1/2 -translate-y-1/2 text-[#7890b5]"
-          size={21}
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7890b5] h-[2vh] w-[2vh]"
           strokeWidth={1.8}
         />
         <input
           aria-describedby={error ? errorId : undefined}
           aria-invalid={Boolean(error)}
           autoComplete={autoComplete}
-          className={`h-14 w-full rounded-xl border bg-white pl-14 pr-14 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
+          className={`h-[5.5vh] w-full rounded-xl border bg-white pl-[4.5vh] pr-[4.5vh] text-[1.6vh] text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
             error ? "border-red-300" : "border-[#d7e2f0]"
           }`}
           id={id}
@@ -47,11 +46,11 @@ export default function PasswordField({
           onClick={onToggle}
           type="button"
         >
-          {visible ? <EyeOff size={21} /> : <Eye size={21} />}
+          {visible ? <EyeOff className="h-[2vh] w-[2vh]" /> : <Eye className="h-[2vh] w-[2vh]" />}
         </button>
       </div>
       {error ? (
-        <p className="mt-2 text-sm text-red-600" id={errorId}>
+        <p className="mt-[1vh] text-[1.4vh] text-red-600" id={errorId}>
           {error}
         </p>
       ) : null}

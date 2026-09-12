@@ -123,10 +123,10 @@ export default function LoginPage() {
         </p>
       }
     >
-      <form className="mt-6 md:mt-7 lg:mt-5" onSubmit={handleSubmit} noValidate>
+      <form className="mt-[2.5vh]" onSubmit={handleSubmit} noValidate>
         {formError ? (
           <div
-            className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700"
+            className="mb-[2vh] rounded-xl border border-red-200 bg-red-50 px-4 py-[1vh] text-[1.4vh] leading-relaxed text-red-700"
             role="alert"
           >
             {formError}
@@ -134,22 +134,21 @@ export default function LoginPage() {
         ) : null}
 
         <div>
-          <label className="text-sm font-semibold text-[#142447]" htmlFor="email">
+          <label className="text-[1.5vh] font-semibold text-[#142447]" htmlFor="email">
             Email address
           </label>
-          <p className="mt-1 text-xs text-[#6f87ad]">
+          <p className="mt-[0.5vh] text-[1.2vh] text-[#6f87ad]">
             Pastikan email sama dengan yang digunakan waktu pembelian.
           </p>
-          <div className="relative mt-3">
+          <div className="relative mt-[1vh]">
             <Mail
               aria-hidden="true"
-              className="absolute left-5 top-1/2 -translate-y-1/2 text-[#7890b5]"
-              size={21}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7890b5] h-[2vh] w-[2vh]"
               strokeWidth={1.8}
             />
             <input
               autoComplete="email"
-              className={`h-14 w-full rounded-xl border bg-white pl-14 pr-5 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
+              className={`h-[5.5vh] w-full rounded-xl border bg-white pl-[4.5vh] pr-[2vh] text-[1.6vh] text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
                 fieldErrors.email ? "border-red-300" : "border-[#d7e2f0]"
               }`}
               id="email"
@@ -163,26 +162,25 @@ export default function LoginPage() {
             />
           </div>
           {fieldErrors.email ? (
-            <p className="mt-2 text-sm text-red-600" id="email-error">
+            <p className="mt-[1vh] text-[1.4vh] text-red-600" id="email-error">
               {fieldErrors.email}
             </p>
           ) : null}
         </div>
 
-        <div className="mt-5 xl:mt-6">
-          <label className="text-sm font-semibold text-[#142447]" htmlFor="password">
+        <div className="mt-[2vh]">
+          <label className="text-[1.5vh] font-semibold text-[#142447]" htmlFor="password">
             Password
           </label>
-          <div className="relative mt-3">
+          <div className="relative mt-[1vh]">
             <LockKeyhole
               aria-hidden="true"
-              className="absolute left-5 top-1/2 -translate-y-1/2 text-[#7890b5]"
-              size={21}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7890b5] h-[2vh] w-[2vh]"
               strokeWidth={1.8}
             />
             <input
               autoComplete="current-password"
-              className={`h-14 w-full rounded-xl border bg-white pl-14 pr-14 text-base text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
+              className={`h-[5.5vh] w-full rounded-xl border bg-white pl-[4.5vh] pr-[4.5vh] text-[1.6vh] text-[#142447] outline-none transition placeholder:text-[#a1b2cd] focus:border-primary-500 focus:ring-4 focus:ring-primary-100 ${
                 fieldErrors.password ? "border-red-300" : "border-[#d7e2f0]"
               }`}
               id="password"
@@ -200,28 +198,28 @@ export default function LoginPage() {
               onClick={() => setShowPassword((visible) => !visible)}
               type="button"
             >
-              {showPassword ? <EyeOff size={21} /> : <Eye size={21} />}
+              {showPassword ? <EyeOff className="h-[2vh] w-[2vh]" /> : <Eye className="h-[2vh] w-[2vh]" />}
             </button>
           </div>
           {fieldErrors.password ? (
-            <p className="mt-2 text-sm text-red-600" id="password-error">
+            <p className="mt-[1vh] text-[1.4vh] text-red-600" id="password-error">
               {fieldErrors.password}
             </p>
           ) : null}
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-4 xl:mt-6">
-          <label className="flex cursor-pointer items-center gap-3 text-sm text-[#6f87ad]">
+        <div className="mt-[2.5vh] flex items-center justify-between gap-4">
+          <label className="flex cursor-pointer items-center gap-2.5 text-[1.4vh] text-[#6f87ad]">
             <input
               checked={rememberMe}
-              className="h-5 w-5 rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
+              className="h-[2vh] w-[2vh] rounded border-[#b7c8df] text-primary-600 accent-primary-600 focus:ring-2 focus:ring-primary-200"
               onChange={(event) => setRememberMe(event.target.checked)}
               type="checkbox"
             />
             Remember me
           </label>
           <Link
-            className="text-sm font-semibold text-primary-600 transition hover:text-primary-700"
+            className="text-[1.4vh] font-semibold text-primary-600 transition hover:text-primary-700"
             href="/forgot-password"
           >
             Forgot password?
@@ -229,19 +227,19 @@ export default function LoginPage() {
         </div>
 
         <button
-          className="mt-6 flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
+          className="mt-[3vh] flex h-[5.5vh] w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 text-[1.6vh] font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
           disabled={isLoading}
           type="submit"
         >
           {isLoading ? (
             <>
-              <LoaderCircle className="animate-spin" size={20} />
+              <LoaderCircle className="animate-spin h-[2vh] w-[2vh]" />
               Signing in...
             </>
           ) : (
             <>
               Login
-              <ArrowRight size={20} />
+              <ArrowRight className="h-[2vh] w-[2vh]" />
             </>
           )}
         </button>
