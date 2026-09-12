@@ -204,9 +204,9 @@ export default async function MemberDashboardPage() {
           </section>
         )}
 
-        <div className="mx-auto max-w-[1376px] space-y-6 px-5 pb-14 pt-6 sm:px-8 sm:pt-8 lg:px-10 xl:px-12">
+        <div className="mx-auto max-w-[1376px] space-y-5 px-5 pb-8 pt-5 sm:px-8 sm:pt-6 lg:px-10 xl:px-12">
           {/* Greeting — preserved per client request */}
-          <div className="mb-2">
+          <div className="mb-1">
             <h1 className="text-2xl font-bold tracking-tight text-[#142447] sm:text-3xl">
               Hi Natasya, Welcome Back!
             </h1>
@@ -221,19 +221,19 @@ export default async function MemberDashboardPage() {
             </section>
           )}
 
-          <section className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-7">
+          <section className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-5 lg:p-6">
             <SectionHeading
               title="Your Products"
               description="Access your purchased products and manage your content."
             />
             {ownedProducts.length > 0 ? (
-              <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {ownedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} owned />
                 ))}
               </div>
             ) : (
-              <div className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center">
+              <div className="mt-4 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-4 py-6 text-center sm:px-5 sm:py-8">
                 <p className="text-sm text-[#6f87ad]">
                   {productData.status === "success"
                     ? "You do not have any active products yet."
@@ -250,19 +250,19 @@ export default async function MemberDashboardPage() {
             )}
           </section>
 
-          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-7">
+          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-5 lg:p-6">
             <SectionHeading
               title="Recommended for You"
               description="Dapatkan promo 10% dengan kode voucher DISKON10 untuk produk yang tersedia di bawah ini."
             />
             {recommendedProducts.length > 0 ? (
-              <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {recommendedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
-              <p className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
+              <p className="mt-4 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-4 py-6 text-center text-sm text-[#6f87ad] sm:px-5 sm:py-8">
                 {productData.status === "success"
                   ? "No additional active products are available right now."
                   : "Live product data is currently unavailable."}
