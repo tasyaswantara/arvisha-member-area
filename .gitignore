@@ -10,3 +10,7 @@ supabase/.temp/
 *.log
 .DS_Store
 .env
+
+
+.vercel/
+scratch/
