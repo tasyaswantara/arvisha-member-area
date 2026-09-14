@@ -81,7 +81,7 @@ function normalizeItems(messageData) {
 
     const addons = getAddonFingerprintData(item.addons);
     const quantity = getQuantity(item);
-    
+
     const normalizedItem = {
       externalProductRef: item.uuid.trim(),
       quantity,
@@ -108,7 +108,7 @@ function normalizeItems(messageData) {
         const addonFingerprint = createHash("sha256")
           .update(JSON.stringify({ ...normalizedAddon, parentFingerprint: fingerprint }))
           .digest("hex");
-          
+
         resultItems.push({
           ...normalizedAddon,
           itemFingerprint: addonFingerprint
@@ -181,19 +181,38 @@ async function upsertTransaction(supabase, { payload, customerId }) {
 
 async function resolveProducts(supabase, items) {
   const externalProductRefs = [...new Set(items.map((item) => item.externalProductRef))];
-  const { data, error } = await supabase
+
+  const { data: directProducts, error: directError } = await supabase
     .from("products")
     .select("id, external_product_ref")
     .eq("provider", "lynk")
     .in("external_product_ref", externalProductRefs);
 
-  if (error) {
+  if (directError) {
     throw new Error("product_mapping_lookup_failed");
   }
 
   const productsByExternalRef = new Map(
-    (data ?? []).map((product) => [product.external_product_ref, product.id])
+    (directProducts ?? []).map((product) => [product.external_product_ref, product.id])
   );
+
+  const unresolvedRefs = externalProductRefs.filter(ref => !productsByExternalRef.has(ref));
+
+  if (unresolvedRefs.length > 0) {
+    const { data: mappedProducts, error: mappedError } = await supabase
+      .from("product_external_mappings")
+      .select("product_id, external_ref")
+      .eq("provider", "lynk")
+      .in("external_ref", unresolvedRefs);
+
+    if (mappedError) {
+      throw new Error("product_mapping_lookup_failed");
+    }
+
+    (mappedProducts ?? []).forEach(mapping => {
+      productsByExternalRef.set(mapping.external_ref, mapping.product_id);
+    });
+  }
 
   return productsByExternalRef;
 }
