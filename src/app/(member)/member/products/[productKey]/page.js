@@ -17,7 +17,7 @@ function ArvishaLogo() {
   );
 }
 
-function MemberHeader() {
+function MemberHeader({ memberName }) {
   return (
     <header className="border-b border-blue-100/70 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[72px] max-w-[1376px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12">
@@ -63,7 +63,7 @@ function MemberHeader() {
             aria-expanded="false"
             className="hidden items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-[#395782] transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:flex"
           >
-            Natasya Desinta
+            {memberName}
             <ChevronDown size={16} aria-hidden="true" />
           </button>
           <form action="/auth/signout" method="post">
@@ -108,10 +108,11 @@ export default async function MemberProductAccessPage({ params }) {
   const { productKey } = await params;
   const productResult = await getMemberProductByKey(productKey);
   const product = productResult.status === "success" ? productResult.product : null;
+  const memberName = productResult.memberName || "Member";
 
   return (
     <div className="min-h-screen bg-[#f7fbff] text-[#142447]">
-      <MemberHeader />
+      <MemberHeader memberName={memberName} />
 
       <main>
         {product ? (

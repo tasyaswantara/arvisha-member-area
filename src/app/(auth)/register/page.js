@@ -213,7 +213,7 @@ export default function RegisterPage() {
                 label="Full name"
                 name="fullName"
                 onChange={updateField(setFullName, "fullName")}
-                placeholder="e.g. Natasya Desinta Swantara"
+                placeholder="e.g. Jane Doe"
                 type="text"
                 value={fullName}
               />

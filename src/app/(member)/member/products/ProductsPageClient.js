@@ -38,7 +38,7 @@ function ArvishaLogo() {
   );
 }
 
-function MemberHeader() {
+function MemberHeader({ memberName }) {
   return (
     <header className="border-b border-primary-100/70 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[72px] max-w-[1376px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12">
@@ -84,7 +84,7 @@ function MemberHeader() {
             aria-expanded="false"
             className="hidden items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-[#395782] transition hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:flex"
           >
-            Natasya Desinta
+            {memberName}
             <ChevronDown size={16} aria-hidden="true" />
           </button>
           <form action="/auth/signout" method="post">
@@ -123,7 +123,7 @@ function ProductSection({ title, description, products, emptyMessage }) {
   );
 }
 
-export default function ProductsPageClient({ productData }) {
+export default function ProductsPageClient({ productData, memberName }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const isError = productData.status === "error";
@@ -142,7 +142,7 @@ export default function ProductsPageClient({ productData }) {
 
   return (
     <div className="min-h-screen bg-[#f7fbff] text-[#142447]">
-      <MemberHeader />
+      <MemberHeader memberName={memberName} />
 
       <main>
         <section className="relative overflow-hidden border-b border-primary-100/60">

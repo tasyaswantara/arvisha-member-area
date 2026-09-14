@@ -91,7 +91,7 @@ function SectionHeading({ title, description, href = "/member/products" }) {
   );
 }
 
-function DashboardHeader() {
+function DashboardHeader({ memberName }) {
   return (
     <header className="border-b border-primary-100/70 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[72px] max-w-[1376px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12">
@@ -128,7 +128,7 @@ function DashboardHeader() {
             aria-expanded="false"
             className="hidden items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-[#395782] transition hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:flex"
           >
-            Natasya Desinta
+            {memberName}
             <ChevronDown size={16} aria-hidden="true" />
           </button>
           <form action="/auth/signout" method="post">
@@ -148,12 +148,13 @@ function DashboardHeader() {
 export default async function MemberDashboardPage() {
   const productData = await getMemberProductData();
   const dashboardStats = createDashboardStats(productData);
+  const memberName = productData.memberName || "Member";
   const ownedProducts = productData.ownedProducts;
   const recommendedProducts = productData.availableProducts;
 
   return (
     <div className="min-h-screen bg-[#f7fbff] text-[#142447]">
-      <DashboardHeader />
+      <DashboardHeader memberName={memberName} />
 
       <main>
         {/* HERO SECTION — temporarily hidden per client request. Remove the `false &&` to restore. */}
@@ -174,7 +175,7 @@ export default async function MemberDashboardPage() {
                   Member Area
                 </div>
                 <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl lg:text-[3.25rem]">
-                  Hi Natasya,
+                  Hi {memberName.split(" ")[0]},
                   <br />
                   <span className="font-normal">Welcome back!</span>
                 </h1>
@@ -208,7 +209,7 @@ export default async function MemberDashboardPage() {
           {/* Greeting — preserved per client request */}
           <div className="mb-1">
             <h1 className="text-2xl font-bold tracking-tight text-[#142447] sm:text-3xl">
-              Hi Natasya, Welcome Back!
+              Hi {memberName.split(" ")[0]}, Welcome Back!
             </h1>
           </div>
 

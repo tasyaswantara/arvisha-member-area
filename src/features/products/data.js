@@ -108,7 +108,7 @@ function toProductDto(product, access = null) {
 export async function getMemberProductData() {
   try {
     const supabase = await createClient();
-    const [accessResult, catalogResult] = await Promise.all([
+    const [accessResult, catalogResult, memberResult] = await Promise.all([
       supabase
         .from("product_access")
         .select(`
@@ -118,12 +118,14 @@ export async function getMemberProductData() {
         `)
         .eq("status", "active"),
       supabase.from("products").select(productCatalogFields).eq("is_active", true),
+      supabase.from("members").select("full_name").maybeSingle(),
     ]);
 
     if (accessResult.error || catalogResult.error) {
-      return { status: "error", ownedProducts: [], availableProducts: [] };
+      return { status: "error", memberName: "Member", ownedProducts: [], availableProducts: [] };
     }
 
+    const memberName = memberResult.data?.full_name || "Member";
     const now = Date.now();
     const activeOwnedAccess = (accessResult.data ?? [])
       .map((access) => ({ ...access, product: getJoinedProduct(access.product) }))
@@ -161,38 +163,44 @@ export async function getMemberProductData() {
       })
       .map((product) => toProductDto(product));
 
-    return { status: "success", ownedProducts, availableProducts };
+    return { status: "success", memberName, ownedProducts, availableProducts };
   } catch {
-    return { status: "error", ownedProducts: [], availableProducts: [] };
+    return { status: "error", memberName: "Member", ownedProducts: [], availableProducts: [] };
   }
 }
 
 export async function getMemberProductByKey(productKey) {
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("product_access")
-      .select(`
-        status,
-        valid_until,
-        product:products!inner (${productDetailFields})
-      `)
-      .eq("status", "active")
-      .eq("product.product_key", productKey)
-      .maybeSingle();
+    const [accessResult, memberResult] = await Promise.all([
+      supabase
+        .from("product_access")
+        .select(`
+          status,
+          valid_until,
+          product:products!inner (${productDetailFields})
+        `)
+        .eq("status", "active")
+        .eq("product.product_key", productKey)
+        .maybeSingle(),
+      supabase.from("members").select("full_name").maybeSingle(),
+    ]);
 
-    if (error) {
-      return { status: "error", product: null };
+    if (accessResult.error) {
+      return { status: "error", product: null, memberName: "Member" };
     }
 
-    const access = data ? { ...data, product: getJoinedProduct(data.product) } : null;
+    const access = accessResult.data ? { ...accessResult.data, product: getJoinedProduct(accessResult.data.product) } : null;
 
     if (!access || !isCurrentActiveAccess(access, Date.now())) {
-      return { status: "not_found", product: null };
+      return { status: "not_found", product: null, memberName: "Member" };
     }
+
+    const memberName = memberResult.data?.full_name || "Member";
 
     return {
       status: "success",
+      memberName,
       product: {
         ...toProductDto(access.product, access),
         contents: getActiveContents(access.product),

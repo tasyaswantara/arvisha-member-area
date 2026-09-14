@@ -20,7 +20,7 @@ export default function ProductCard({ product, owned = false }) {
           alt={product.name}
           fill
           sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 20vw"
-          className={`object-cover ${owned ? "" : "opacity-90"}`}
+          className={`object-cover ${owned ? "" : "opacity-100"}`}
         />
         <div className="absolute inset-0" />
         <span className="absolute bottom-2 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-semibold capitalize text-[#4f6d9e] shadow-sm sm:left-3 sm:px-2.5 sm:text-[10px]">

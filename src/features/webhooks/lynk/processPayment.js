@@ -74,25 +74,49 @@ function normalizeItems(messageData) {
     throw new Error("payment_items_missing");
   }
 
-  return messageData.items.map((item) => {
+  return messageData.items.flatMap((item) => {
     if (!isObject(item) || typeof item.uuid !== "string" || !item.uuid.trim()) {
       throw new Error("invalid_item_reference");
     }
 
+    const addons = getAddonFingerprintData(item.addons);
+    const quantity = getQuantity(item);
+    
     const normalizedItem = {
       externalProductRef: item.uuid.trim(),
-      quantity: getQuantity(item),
+      quantity,
       unitAmount: getUnitAmount(item),
-      addons: getAddonFingerprintData(item.addons)
+      addons: addons
     };
     const fingerprint = createHash("sha256")
       .update(JSON.stringify(normalizedItem))
       .digest("hex");
 
-    return {
+    const resultItems = [{
       ...normalizedItem,
       itemFingerprint: fingerprint
-    };
+    }];
+
+    for (const addon of addons) {
+      if (addon.id) {
+        const normalizedAddon = {
+          externalProductRef: addon.id,
+          quantity,
+          unitAmount: addon.price,
+          addons: []
+        };
+        const addonFingerprint = createHash("sha256")
+          .update(JSON.stringify({ ...normalizedAddon, parentFingerprint: fingerprint }))
+          .digest("hex");
+          
+        resultItems.push({
+          ...normalizedAddon,
+          itemFingerprint: addonFingerprint
+        });
+      }
+    }
+
+    return resultItems;
   });
 }
 
