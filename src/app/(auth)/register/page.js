@@ -34,29 +34,29 @@ function getClientErrors({ confirmPassword, email, fullName, password, termsAcce
   const normalizedEmail = email.trim();
 
   if (!fullName.trim()) {
-    errors.fullName = "Full name is required.";
+    errors.fullName = "Nama lengkap wajib diisi.";
   }
 
   if (!normalizedEmail) {
-    errors.email = "Email address is required.";
+    errors.email = "Alamat email wajib diisi.";
   } else if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
-    errors.email = "Invalid email address.";
+    errors.email = "Alamat email tidak valid.";
   }
 
   if (!password) {
-    errors.password = "Password is required.";
+    errors.password = "Kata sandi wajib diisi.";
   } else if (password.length < 8) {
-    errors.password = "Password must be at least 8 characters.";
+    errors.password = "Kata sandi minimal 8 karakter.";
   }
 
   if (!confirmPassword) {
-    errors.confirmPassword = "Please confirm your password.";
+    errors.confirmPassword = "Harap konfirmasi kata sandi Anda.";
   } else if (password !== confirmPassword) {
-    errors.confirmPassword = "Passwords do not match.";
+    errors.confirmPassword = "Kata sandi tidak cocok.";
   }
 
   if (!termsAccepted) {
-    errors.termsAccepted = "Please agree to the Terms & Conditions.";
+    errors.termsAccepted = "Harap setujui Syarat & Ketentuan.";
   }
 
   return errors;
@@ -168,13 +168,13 @@ export default function RegisterPage() {
             <div className="mt-[2.5vh] text-center">
               <div className="inline-flex items-center gap-1.5 rounded-full bg-primary-100/80 px-2.5 py-1 text-[1.2vh] font-semibold text-primary-600 shadow-sm shadow-primary-100 lg:hidden">
                 <UserRound aria-hidden="true" className="h-[1.5vh] w-[1.5vh]" strokeWidth={2} />
-                Create your account
+                Buat akun Anda
               </div>
               <h1 className="mt-[1vh] text-[3.2vh] font-bold tracking-[-0.04em] text-[#142447] lg:mt-0">
-                Join ARVISHA today
+                Bergabung dengan ARVISHA hari ini
               </h1>
               <p className="mx-auto mt-[0.5vh] max-w-[410px] text-[1.4vh] leading-6 text-[#6f87ad] lg:hidden">
-                Fill in your details to get started.
+                Isi detail Anda untuk memulai.
               </p>
             </div>
           )}
@@ -185,15 +185,15 @@ export default function RegisterPage() {
                 <div className="mx-auto flex h-[5vh] w-[5vh] items-center justify-center rounded-full bg-primary-100 text-primary-600">
                   <Mail aria-hidden="true" className="h-[2.5vh] w-[2.5vh]" />
                 </div>
-                <h3 className="mt-[2vh] text-[2vh] font-bold text-[#142447]">Check your email</h3>
+                <h3 className="mt-[2vh] text-[2vh] font-bold text-[#142447]">Periksa email Anda</h3>
                 <p className="mt-[1vh] text-[1.4vh] leading-relaxed text-[#55719d]">
-                  We&apos;ve created your Arvisha account. Please check your inbox and verify your email before logging in.
+                  Kami telah membuat akun Arvisha Anda. Silakan periksa kotak masuk dan verifikasi email Anda sebelum masuk.
                 </p>
                 <Link
                   className="mt-[2.5vh] inline-flex items-center gap-2 rounded-sm text-[1.4vh] font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
                   href="/login"
                 >
-                  Back to login
+                  Kembali ke halaman masuk
                   <ArrowRight aria-hidden="true" className="h-[2vh] w-[2vh]" />
                 </Link>
               </div>
@@ -210,10 +210,10 @@ export default function RegisterPage() {
                 error={getError("fullName")}
                 icon={UserRound}
                 id="register-full-name"
-                label="Full name"
+                label="Nama lengkap"
                 name="fullName"
                 onChange={updateField(setFullName, "fullName")}
-                placeholder="e.g. Jane Doe"
+                placeholder="contoh: Jane Doe"
                 type="text"
                 value={fullName}
               />
@@ -221,11 +221,11 @@ export default function RegisterPage() {
                 error={getError("email")}
                 icon={Mail}
                 id="register-email"
-                label="Email address"
+                label="Alamat Email"
                 name="email"
                 helperText="Pastikan email sama dengan yang digunakan waktu pembelian."
                 onChange={updateField(setEmail, "email")}
-                placeholder="e.g. you@example.com"
+                placeholder="contoh: anda@contoh.com"
                 type="email"
                 value={email}
               />
@@ -233,11 +233,11 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 error={getError("password")}
                 id="register-password"
-                label="Password"
+                label="Kata Sandi"
                 name="password"
                 onChange={updateField(setPassword, "password")}
                 onToggle={() => setShowPassword((visible) => !visible)}
-                placeholder="Create a password"
+                placeholder="Buat kata sandi"
                 value={password}
                 visible={showPassword}
               />
@@ -245,11 +245,11 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 error={getError("confirmPassword")}
                 id="register-confirm-password"
-                label="Confirm password"
+                label="Konfirmasi kata sandi"
                 name="confirmPassword"
                 onChange={updateField(setConfirmPassword, "confirmPassword")}
                 onToggle={() => setShowConfirmPassword((visible) => !visible)}
-                placeholder="Confirm your password"
+                placeholder="Konfirmasi kata sandi Anda"
                 value={confirmPassword}
                 visible={showConfirmPassword}
               />
@@ -271,7 +271,7 @@ export default function RegisterPage() {
                     value="true"
                   />
                   <span>
-                    I agree to the <span className="font-medium text-primary-600">Terms &amp; Conditions</span> and <span className="font-medium text-primary-600">Privacy Policy</span>
+                    Saya menyetujui <span className="font-medium text-primary-600">Syarat &amp; Ketentuan</span> dan <span className="font-medium text-primary-600">Kebijakan Privasi</span>
                   </span>
                 </label>
                 {getError("termsAccepted") ? (
@@ -289,11 +289,11 @@ export default function RegisterPage() {
                 {isPending ? (
                   <>
                     <LoaderCircle aria-hidden="true" className="animate-spin h-[2vh] w-[2vh]" />
-                    Creating account...
+                    Sedang membuat akun...
                   </>
                 ) : (
                   <>
-                    Create account
+                    Buat Akun
                     <ArrowRight aria-hidden="true" className="h-[2vh] w-[2vh]" />
                   </>
                 )}
@@ -304,12 +304,12 @@ export default function RegisterPage() {
           {!state.success && (
             <div className="mt-[2.5vh] text-center text-[1.4vh] text-[#6f87ad]">
               <p>
-                Already have an account?{" "}
+                Sudah punya akun?{" "}
                 <Link
                   className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
                   href="/login"
                 >
-                  Login here
+                  Masuk di sini
                 </Link>
               </p>
             </div>

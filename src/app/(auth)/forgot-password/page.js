@@ -9,10 +9,10 @@ import { createClient } from "@/lib/supabase/client";
 
 function getFriendlyResetError(error) {
   if (error?.status === 429 || error?.message?.toLowerCase().includes("rate limit")) {
-    return "Too many requests. Please wait a moment and try again.";
+    return "Terlalu banyak permintaan. Harap tunggu sebentar dan coba lagi.";
   }
 
-  return "We couldn't send a reset link right now. Please try again in a moment.";
+  return "Kami tidak dapat mengirimkan tautan reset saat ini. Harap coba lagi beberapa saat lagi.";
 }
 
 export default function ForgotPasswordPage() {
@@ -34,12 +34,12 @@ export default function ForgotPasswordPage() {
     setFormError("");
 
     if (!normalizedEmail) {
-      setFieldError("Enter your email address.");
+      setFieldError("Masukkan alamat email Anda.");
       return;
     }
 
     if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
-      setFieldError("Enter a valid email address.");
+      setFieldError("Masukkan alamat email yang valid.");
       return;
     }
 
@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
 
       setIsSuccess(true);
     } catch {
-      setFormError("We couldn't send a reset link right now. Please try again in a moment.");
+      setFormError("Kami tidak dapat mengirimkan tautan reset saat ini. Harap coba lagi beberapa saat lagi.");
     } finally {
       setIsLoading(false);
     }
@@ -66,27 +66,27 @@ export default function ForgotPasswordPage() {
 
   return (
     <AuthPageShell
-      description="Enter your email and we'll send you a link to reset your password."
-      eyebrow="Forgot your password?"
+      description="Masukkan email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda."
+      eyebrow="Lupa kata sandi Anda?"
       footer={
         <>
-          Remember your password?{" "}
+          Ingat kata sandi Anda?{" "}
           <Link
             className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/login"
           >
-            Back to login
+            Kembali ke halaman masuk
           </Link>
         </>
       }
-      title="Reset your password"
+      title="Atur ulang kata sandi Anda"
     >
       {isSuccess ? (
         <div
           aria-live="polite"
           className="mt-8 rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-5 text-center text-sm leading-6 text-[#55719d]"
         >
-          If an account exists for this email, we&apos;ve sent a password reset link.
+          Jika akun dengan email ini ada, kami telah mengirimkan tautan reset kata sandi.
         </div>
       ) : (
         <form className="mt-8" noValidate onSubmit={handleSubmit}>
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
 
           <div>
             <label className="text-sm font-semibold text-[#142447]" htmlFor="reset-email">
-              Email address
+              Alamat Email
             </label>
             <div className="relative mt-3">
               <Mail
@@ -124,7 +124,7 @@ export default function ForgotPasswordPage() {
                   setFieldError("");
                   setFormError("");
                 }}
-                placeholder="you@example.com"
+                placeholder="anda@contoh.com"
                 required
                 type="email"
                 value={email}
@@ -145,11 +145,11 @@ export default function ForgotPasswordPage() {
             {isLoading ? (
               <>
                 <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
-                Sending link...
+                Mengirim tautan...
               </>
             ) : (
               <>
-                Send reset link
+                Kirim tautan reset
                 <ArrowRight aria-hidden="true" size={20} />
               </>
             )}

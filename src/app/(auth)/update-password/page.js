@@ -18,14 +18,14 @@ function getFriendlyUpdateError(error) {
     message.includes("invalid") ||
     message.includes("token")
   ) {
-    return "This password reset link is invalid or expired. Please request a new one.";
+    return "Tautan reset kata sandi ini tidak valid atau telah kedaluwarsa. Harap minta tautan baru.";
   }
 
   if (error?.status === 429 || message.includes("rate limit")) {
-    return "Too many requests. Please wait a moment and try again.";
+    return "Terlalu banyak permintaan. Harap tunggu sebentar dan coba lagi.";
   }
 
-  return "We couldn't update your password. Please try again.";
+  return "Kami tidak dapat memperbarui kata sandi Anda. Harap coba lagi.";
 }
 
 export default function UpdatePasswordPage() {
@@ -56,15 +56,15 @@ export default function UpdatePasswordPage() {
     const errors = {};
 
     if (!newPassword) {
-      errors.newPassword = "Enter a new password.";
+      errors.newPassword = "Masukkan kata sandi baru.";
     } else if (newPassword.length < 8) {
-      errors.newPassword = "Use at least 8 characters.";
+      errors.newPassword = "Gunakan setidaknya 8 karakter.";
     }
 
     if (!confirmPassword) {
-      errors.confirmPassword = "Confirm your new password.";
+      errors.confirmPassword = "Konfirmasi kata sandi baru Anda.";
     } else if (newPassword !== confirmPassword) {
-      errors.confirmPassword = "Passwords do not match.";
+      errors.confirmPassword = "Kata sandi tidak cocok.";
     }
 
     return errors;
@@ -98,13 +98,13 @@ export default function UpdatePasswordPage() {
       const { error: signOutError } = await supabase.auth.signOut();
 
       if (signOutError) {
-        setFormError("Your password was updated. Please return to login and sign in again.");
+        setFormError("Kata sandi Anda telah diperbarui. Silakan kembali ke halaman masuk dan masuk kembali.");
         return;
       }
 
       setIsSuccess(true);
     } catch {
-      setFormError("We couldn't update your password. Please try again.");
+      setFormError("Kami tidak dapat memperbarui kata sandi Anda. Harap coba lagi.");
     } finally {
       setIsLoading(false);
     }
@@ -120,31 +120,31 @@ export default function UpdatePasswordPage() {
 
   return (
     <AuthPageShell
-      description="Choose a new password to keep your Arvisha account secure."
-      eyebrow="Password recovery"
+      description="Pilih kata sandi baru untuk menjaga keamanan akun Arvisha Anda."
+      eyebrow="Pemulihan kata sandi"
       footer={
         <>
-          Need a new reset link?{" "}
+          Butuh tautan reset baru?{" "}
           <Link
             className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/forgot-password"
           >
-            Request another
+            Minta tautan baru
           </Link>
         </>
       }
-      title="Create a new password"
+      title="Buat kata sandi baru"
     >
       {isSuccess ? (
         <div aria-live="polite" className="mt-8 text-center">
           <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-5 text-sm leading-6 text-[#55719d]">
-            Your password has been updated. Redirecting you to login...
+            Kata sandi Anda telah diperbarui. Mengalihkan Anda ke halaman masuk...
           </div>
           <Link
             className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/login"
           >
-            Go to login now
+            Pergi ke halaman masuk sekarang
             <ArrowRight aria-hidden="true" size={17} />
           </Link>
         </div>
@@ -163,11 +163,11 @@ export default function UpdatePasswordPage() {
             autoComplete="new-password"
             error={fieldErrors.newPassword}
             id="new-password"
-            label="New password"
+            label="Kata sandi baru"
             name="new-password"
             onChange={updateField(setNewPassword, "newPassword")}
             onToggle={() => setShowNewPassword((visible) => !visible)}
-            placeholder="Create a password"
+            placeholder="Buat kata sandi"
             value={newPassword}
             visible={showNewPassword}
           />
@@ -175,11 +175,11 @@ export default function UpdatePasswordPage() {
             autoComplete="new-password"
             error={fieldErrors.confirmPassword}
             id="confirm-password"
-            label="Confirm password"
+            label="Konfirmasi kata sandi"
             name="confirm-password"
             onChange={updateField(setConfirmPassword, "confirmPassword")}
             onToggle={() => setShowConfirmPassword((visible) => !visible)}
-            placeholder="Confirm your password"
+            placeholder="Konfirmasi kata sandi Anda"
             value={confirmPassword}
             visible={showConfirmPassword}
           />
@@ -192,11 +192,11 @@ export default function UpdatePasswordPage() {
             {isLoading ? (
               <>
                 <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
-                Updating password...
+                Memperbarui kata sandi...
               </>
             ) : (
               <>
-                Update password
+                Perbarui kata sandi
                 <ArrowRight aria-hidden="true" size={20} />
               </>
             )}

@@ -11,16 +11,16 @@ function ContentNotFound() {
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
           <BookOpen size={28} strokeWidth={1.8} aria-hidden="true" />
         </div>
-        <p className="mt-6 text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">Content Access</p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#142447] sm:text-4xl">Content Not Found</h1>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-[#6f87ad]">
-          This content is unavailable or you do not have access to it.
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 md:text-sm">Akses Konten</p>
+        <h1 className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#142447] md:text-2xl lg:text-3xl">Konten Tidak Ditemukan</h1>
+        <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#6f87ad] md:text-base">
+          Konten ini tidak tersedia atau Anda tidak memiliki akses.
         </p>
         <Link
           href="/member/products"
           className="mt-7 inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         >
-          Back to Products
+          Kembali ke Produk
           <ArrowRight size={17} aria-hidden="true" />
         </Link>
       </div>
@@ -34,9 +34,9 @@ function PrintContent({ content }) {
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
         <FileText size={29} strokeWidth={1.7} aria-hidden="true" />
       </div>
-      <h2 className="mt-5 text-xl font-semibold text-[#142447]">{content.name}</h2>
-      <p className="mt-3 text-sm leading-6 text-[#6f87ad]">
-        This is a print edition and does not have a digital viewer.
+      <h2 className="mt-4 text-lg font-semibold leading-snug tracking-tight text-[#142447]">{content.name}</h2>
+      <p className="mt-2 text-sm leading-6 text-[#6f87ad] md:text-base">
+        Ini adalah edisi cetak dan tidak memiliki penampil digital.
       </p>
     </div>
   );
@@ -45,9 +45,9 @@ function PrintContent({ content }) {
 function MissingEmbed({ content }) {
   return (
     <div className="rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-6 py-12 text-center sm:px-10">
-      <h2 className="text-xl font-semibold text-[#142447]">{content.name}</h2>
-      <p className="mt-3 text-sm leading-6 text-[#6f87ad]">
-        This digital content is not available yet.
+      <h2 className="text-lg font-semibold leading-snug tracking-tight text-[#142447]">{content.name}</h2>
+      <p className="mt-2 text-sm leading-6 text-[#6f87ad] md:text-base">
+        Konten digital ini belum tersedia.
       </p>
     </div>
   );
@@ -77,7 +77,7 @@ export default async function MemberContentViewerPage({ params }) {
             className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
           >
             <ArrowLeft size={16} aria-hidden="true" />
-            Back to Product
+            Kembali
           </Link>
           <Image
             src="/images/logotext horizontal.png"
@@ -101,34 +101,34 @@ export default async function MemberContentViewerPage({ params }) {
             sizes="100vw"
             className="pointer-events-none object-cover object-center opacity-60"
           />
-          <div className="relative mx-auto max-w-[1376px] px-5 pb-10 pt-9 sm:px-8 sm:pb-12 sm:pt-12 lg:px-10 lg:pt-14 xl:px-12">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">{product.name}</p>
-            <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl">
+          <div className="relative mx-auto max-w-[1376px] px-5 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-12 xl:px-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 md:text-sm">{product.name}</p>
+            <h1 className="mt-2 max-w-4xl text-xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] md:text-2xl lg:text-3xl">
               {content.name}
             </h1>
-            <span className="mt-5 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold capitalize text-blue-600">
+            <span className="mt-4 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold capitalize text-blue-600">
               {content.contentType}
             </span>
           </div>
         </section>
 
-        <div className="mx-auto max-w-[1376px] px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 xl:px-12">
-          <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+        <div className="mx-auto max-w-[1376px] px-5 pb-12 pt-6 sm:px-8 sm:pt-8 lg:px-10 xl:px-12">
+          <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-8">
             {!isDigital && (
               <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">
-                    Content Details
+                  <h2 className="text-base font-semibold leading-snug tracking-tight text-[#142447] md:text-lg">
+                    Detail Konten
                   </h2>
-                  <p className="mt-1 text-sm text-[#6f87ad]">
-                    Information for this content edition.
+                  <p className="mt-1 text-xs text-[#6f87ad] md:text-sm">
+                    Informasi untuk edisi konten ini.
                   </p>
                 </div>
                 <Link
                   href={`/member/products/${product.productKey}`}
                   className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
                 >
-                  Back to Product
+                  Kembali
                   <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </div>

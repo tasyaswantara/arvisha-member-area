@@ -20,7 +20,7 @@ function withPresentationData(product, owned) {
     description: getProductDisplayDescription(product),
     image: product.thumbnailUrl || "/images/bgeffect.png",
     status: owned ? "active" : "available",
-    action: owned ? "Open Product" : product.purchaseUrl ? "Beli Dengan Promo!" : "Purchase unavailable",
+    action: owned ? "Buka Produk" : product.purchaseUrl ? "Beli Dengan Promo!" : "Pembelian tidak tersedia",
   };
 }
 
@@ -60,10 +60,10 @@ function MemberHeader({ memberName }) {
               href="/member/products"
               className="relative py-7 text-primary-600 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-primary-500"
             >
-              Products
+              Produk
             </Link>
             <a href="#help" className="py-7 transition hover:text-primary-600">
-              Help
+              Bantuan
             </a>
           </nav>
         </div>
@@ -92,7 +92,7 @@ function MemberHeader({ memberName }) {
               type="submit"
               className="rounded-lg border border-primary-200 px-3 py-2 text-xs font-semibold text-primary-600 transition hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
             >
-              Logout
+              Keluar
             </button>
           </form>
         </div>
@@ -103,19 +103,19 @@ function MemberHeader({ memberName }) {
 
 function ProductSection({ title, description, products, emptyMessage }) {
   return (
-    <section className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+    <section className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-8">
       <div>
-        <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">{title}</h2>
-        <p className="mt-1 text-sm text-[#6f87ad]">{description}</p>
+        <h2 className="text-base font-semibold leading-snug tracking-tight text-[#142447] md:text-lg">{title}</h2>
+        <p className="mt-1 text-xs text-[#6f87ad] md:text-sm">{description}</p>
       </div>
       {products.length > 0 ? (
-        <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-5 grid gap-4 md:grid-cols-2 lg:gap-5 xl:grid-cols-3">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} owned={product.status === "active"} />
           ))}
         </div>
       ) : (
-        <p className="mt-7 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
+        <p className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-5 py-6 text-center text-sm text-[#6f87ad]">
           {emptyMessage}
         </p>
       )}
@@ -154,45 +154,45 @@ export default function ProductsPageClient({ productData, memberName }) {
             sizes="100vw"
             className="pointer-events-none object-cover object-center opacity-60"
           />
-          <div className="relative mx-auto max-w-[1376px] px-5 pb-9 pt-10 sm:px-8 sm:pb-12 sm:pt-14 lg:px-10 lg:pt-16 xl:px-12">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary-600">Products</p>
-            <h1 className="mt-3 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl">
-              Explore Products
+          <div className="relative mx-auto max-w-[1376px] px-5 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-12 xl:px-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-600 md:text-sm">Produk</p>
+            <h1 className="mt-2 text-xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] md:text-2xl lg:text-3xl">
+              Jelajahi Produk
             </h1>
-            <p className="mt-4 text-base leading-7 text-[#6f87ad]">Access your products or discover something new.</p>
+            <p className="mt-3 text-sm leading-6 text-[#6f87ad] md:text-base">Akses produk Anda atau temukan yang baru.</p>
           </div>
         </section>
 
-        <div className="mx-auto max-w-[1376px] space-y-8 px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 xl:px-12">
+        <div className="mx-auto max-w-[1376px] space-y-6 px-5 pb-12 pt-6 sm:space-y-8 sm:px-8 sm:pt-8 lg:px-10 xl:px-12">
           {isError && (
             <p className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-              Live product data is currently unavailable. Please try again later.
+              Data produk tidak tersedia saat ini. Silakan coba lagi nanti.
             </p>
           )}
 
           <section aria-label="Product search and filters" className="rounded-2xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_30px_rgba(50,103,172,0.05)] sm:p-5">
             <div className="flex flex-col gap-3 md:flex-row">
               <label className="relative min-w-0 flex-1">
-                <span className="sr-only">Search products</span>
+                <span className="sr-only">Cari produk</span>
                 <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#7890b5]" size={18} aria-hidden="true" />
                 <input
                   type="search"
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search products..."
+                  placeholder="Cari produk..."
                   className="h-11 w-full rounded-xl border border-primary-100 bg-[#f9fcff] pl-11 pr-4 text-sm text-[#142447] outline-none transition placeholder:text-[#9aacc8] focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
                 />
               </label>
               <label className="relative md:w-52">
-                <span className="sr-only">Filter products</span>
+                <span className="sr-only">Filter produk</span>
                 <select
                   value={filter}
                   onChange={(event) => setFilter(event.target.value)}
                   className="h-11 w-full appearance-none rounded-xl border border-primary-100 bg-[#f9fcff] px-4 pr-10 text-sm font-medium text-[#395782] outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
                 >
-                  <option value="all">All Products</option>
-                  <option value="owned">My Products</option>
-                  <option value="available">Available Products</option>
+                  <option value="all">Semua Produk</option>
+                  <option value="owned">Produk Saya</option>
+                  <option value="available">Produk Tersedia</option>
                 </select>
                 <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#7890b5]" size={17} aria-hidden="true" />
               </label>
@@ -200,16 +200,16 @@ export default function ProductsPageClient({ productData, memberName }) {
           </section>
 
           <ProductSection
-            title="My Products"
-            description="Products you already have access to."
+            title="Produk Saya"
+            description="Produk yang sudah dapat Anda akses."
             products={filteredOwnedProducts}
-            emptyMessage="No active products are available for this account."
+            emptyMessage="Tidak ada produk aktif yang tersedia untuk akun ini."
           />
           <ProductSection
-            title="Available Products"
-            description="Discover products you haven't purchased yet."
+            title="Produk Tersedia"
+            description="Temukan produk yang belum Anda beli."
             products={filteredAvailableProducts}
-            emptyMessage="No active products are available right now."
+            emptyMessage="Tidak ada produk aktif yang tersedia saat ini."
           />
         </div>
       </main>

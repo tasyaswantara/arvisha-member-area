@@ -39,10 +39,10 @@ function MemberHeader({ memberName }) {
               href="/member/products"
               className="relative py-7 text-blue-600 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-blue-500"
             >
-              Products
+              Produk
             </Link>
             <a href="#help" className="py-7 transition hover:text-blue-600">
-              Help
+              Bantuan
             </a>
           </nav>
         </div>
@@ -71,7 +71,7 @@ function MemberHeader({ memberName }) {
               type="submit"
               className="rounded-lg border border-blue-200 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
             >
-              Logout
+              Keluar
             </button>
           </form>
         </div>
@@ -87,16 +87,16 @@ function ProductNotFound() {
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
           <BookOpen size={28} strokeWidth={1.8} aria-hidden="true" />
         </div>
-        <p className="mt-6 text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">Product Access</p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#142447] sm:text-4xl">Product Not Found</h1>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-[#6f87ad]">
-          We could not find the product you are looking for. Return to Products to explore your available products.
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 md:text-sm">Akses Produk</p>
+        <h1 className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#142447] md:text-2xl lg:text-3xl">Produk Tidak Ditemukan</h1>
+        <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#6f87ad] md:text-base">
+          Kami tidak dapat menemukan produk yang Anda cari. Kembali ke Produk untuk menjelajahi produk yang tersedia.
         </p>
         <Link
           href="/member/products"
           className="mt-7 inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         >
-          Back to Products
+          Kembali ke Produk
           <ArrowRight size={17} aria-hidden="true" />
         </Link>
       </div>
@@ -126,38 +126,38 @@ export default async function MemberProductAccessPage({ params }) {
                 sizes="100vw"
                 className="pointer-events-none object-cover object-center opacity-60"
               />
-              <div className="relative mx-auto max-w-[1376px] px-5 pb-10 pt-9 sm:px-8 sm:pb-12 sm:pt-12 lg:px-10 lg:pt-14 xl:px-12">
+              <div className="relative mx-auto max-w-[1376px] px-5 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-12 xl:px-12">
                 <Link
                   href="/member/products"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4"
                 >
                   <ArrowLeft size={16} aria-hidden="true" />
-                  Back to Products
+                  Kembali ke Produk
                 </Link>
-                <p className="mt-8 text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">Product Access</p>
-                <h1 className="mt-3 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl">
+                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 md:text-sm">Akses Produk</p>
+                <h1 className="mt-2 text-xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] md:text-2xl lg:text-3xl">
                   {product.name}
                 </h1>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-[#6f87ad]">
-                  {product.description || "Your product content is available below."}
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-[#6f87ad] md:text-base">
+                  {product.description || "Konten produk Anda tersedia di bawah ini."}
                 </p>
               </div>
             </section>
 
-            <div className="mx-auto max-w-[1376px] px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 xl:px-12">
-              <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-7 lg:p-8">
+            <div className="mx-auto max-w-[1376px] px-5 pb-12 pt-6 sm:px-8 sm:pt-8 lg:px-10 xl:px-12">
+              <section className="rounded-3xl border border-blue-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-8">
                 <div className="flex items-end justify-between gap-4">
                   <div>
-                    <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">Contents in this product</h2>
-                    <p className="mt-1 text-sm text-[#6f87ad]">
-                      {product.contentCount} {product.contentCount === 1 ? "content" : "contents"} included with this product.
+                    <h2 className="text-base font-semibold leading-snug tracking-tight text-[#142447] md:text-lg">Konten dalam produk ini</h2>
+                    <p className="mt-1 text-xs text-[#6f87ad] md:text-sm">
+                      {product.contentCount} konten disertakan dalam produk ini.
                     </p>
                   </div>
                   <span className="hidden rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600 sm:inline-flex">
                     Active
                   </span>
                 </div>
-                <div className="mt-7 space-y-6">
+                <div className="mt-5 space-y-4">
                   {product.contents.length > 0 ? (
                     product.contents.map((content) => (
                       <article
@@ -169,7 +169,7 @@ export default async function MemberProductAccessPage({ params }) {
                             <FileText size={21} strokeWidth={1.8} aria-hidden="true" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-base font-semibold text-[#142447]">{content.name}</h3>
+                            <h3 className="text-sm font-semibold text-[#142447] md:text-base">{content.name}</h3>
                             <span className="mt-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold capitalize text-blue-600">
                               {content.contentType}
                             </span>
@@ -186,7 +186,7 @@ export default async function MemberProductAccessPage({ params }) {
                     ))
                   ) : (
                     <div className="rounded-2xl border border-dashed border-blue-100 bg-[#f7fbff] px-5 py-8 text-center text-sm text-[#6f87ad]">
-                      No active content is available for this product yet.
+                      Belum ada konten aktif yang tersedia untuk produk ini.
                     </div>
                   )}
                 </div>
@@ -213,9 +213,9 @@ export default async function MemberProductAccessPage({ params }) {
             <span>© 2025 Arvisha. All rights reserved.</span>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer navigation">
-            <a href="#terms" className="transition hover:text-blue-600">Terms of Service</a>
-            <a href="#privacy" className="transition hover:text-blue-600">Privacy Policy</a>
-            <a href="#help" className="transition hover:text-blue-600">Help</a>
+            <a href="#terms" className="transition hover:text-blue-600">Syarat Ketentuan</a>
+            <a href="#privacy" className="transition hover:text-blue-600">Kebijakan Privasi</a>
+            <a href="#help" className="transition hover:text-blue-600">Bantuan</a>
           </nav>
         </div>
       </footer>

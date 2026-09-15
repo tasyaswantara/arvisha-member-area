@@ -19,14 +19,14 @@ function getFriendlyLoginError(error) {
   const message = error?.message?.toLowerCase() ?? "";
 
   if (error?.status === 429 || message.includes("rate limit")) {
-    return "Too many attempts. Please wait a moment and try again.";
+    return "Terlalu banyak percobaan. Harap tunggu sebentar dan coba lagi.";
   }
 
   if (message.includes("email not confirmed")) {
-    return "Please confirm your email address before signing in.";
+    return "Harap konfirmasi alamat email Anda sebelum masuk.";
   }
 
-  return "We couldn't sign you in. Check your email and password and try again.";
+  return "Kami tidak dapat memproses masuk Anda. Periksa email dan kata sandi Anda dan coba lagi.";
 }
 
 export default function LoginPage() {
@@ -44,13 +44,13 @@ export default function LoginPage() {
     const normalizedEmail = email.trim();
 
     if (!normalizedEmail) {
-      errors.email = "Enter your email address.";
+      errors.email = "Masukkan alamat email Anda.";
     } else if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
-      errors.email = "Enter a valid email address.";
+      errors.email = "Masukkan alamat email yang valid.";
     }
 
     if (!password) {
-      errors.password = "Enter your password.";
+      errors.password = "Masukkan kata sandi Anda.";
     }
 
     return errors;
@@ -88,7 +88,7 @@ export default function LoginPage() {
       router.replace("/member/dashboard");
       router.refresh();
     } catch {
-      setFormError("We couldn't sign you in. Please try again.");
+      setFormError("Kami tidak dapat memproses masuk Anda. Harap coba lagi.");
     } finally {
       setIsLoading(false);
     }
@@ -108,17 +108,17 @@ export default function LoginPage() {
 
   return (
     <AuthPageShell
-      eyebrow="Welcome back"
-      title="Login to your account"
-      description="Enter your email and password to continue"
+      eyebrow="Selamat datang kembali"
+      title="Masuk ke akun Anda"
+      description="Masukkan email dan kata sandi Anda untuk melanjutkan"
       footer={
         <p>
-          Don&apos;t have an account?{" "}
+          Belum punya akun?{" "}
           <Link
             className="rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
             href="/register"
           >
-            Register here
+            Daftar di sini
           </Link>
         </p>
       }
@@ -135,7 +135,7 @@ export default function LoginPage() {
 
         <div>
           <label className="text-[1.5vh] font-semibold text-[#142447]" htmlFor="email">
-            Email address
+            Alamat Email
           </label>
           <p className="mt-[0.5vh] text-[1.2vh] text-[#6f87ad]">
             Pastikan email sama dengan yang digunakan waktu pembelian.
@@ -154,7 +154,7 @@ export default function LoginPage() {
               id="email"
               name="email"
               onChange={(event) => updateEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder="anda@contoh.com"
               type="email"
               value={email}
               aria-describedby={fieldErrors.email ? "email-error" : undefined}
@@ -170,7 +170,7 @@ export default function LoginPage() {
 
         <div className="mt-[2vh]">
           <label className="text-[1.5vh] font-semibold text-[#142447]" htmlFor="password">
-            Password
+            Kata Sandi
           </label>
           <div className="relative mt-[1vh]">
             <LockKeyhole
@@ -186,14 +186,14 @@ export default function LoginPage() {
               id="password"
               name="password"
               onChange={(event) => updatePassword(event.target.value)}
-              placeholder="Enter your password"
+              placeholder="Masukkan kata sandi Anda"
               type={showPassword ? "text" : "password"}
               value={password}
               aria-describedby={fieldErrors.password ? "password-error" : undefined}
               aria-invalid={Boolean(fieldErrors.password)}
             />
             <button
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
               className="absolute right-4 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#7890b5] transition hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-200"
               onClick={() => setShowPassword((visible) => !visible)}
               type="button"
@@ -216,13 +216,13 @@ export default function LoginPage() {
               onChange={(event) => setRememberMe(event.target.checked)}
               type="checkbox"
             />
-            Remember me
+            Ingat saya
           </label>
           <Link
             className="text-[1.4vh] font-semibold text-primary-600 transition hover:text-primary-700"
             href="/forgot-password"
           >
-            Forgot password?
+            Lupa kata sandi?
           </Link>
         </div>
 
@@ -234,11 +234,11 @@ export default function LoginPage() {
           {isLoading ? (
             <>
               <LoaderCircle className="animate-spin h-[2vh] w-[2vh]" />
-              Signing in...
+              Sedang masuk...
             </>
           ) : (
             <>
-              Login
+              Masuk
               <ArrowRight className="h-[2vh] w-[2vh]" />
             </>
           )}

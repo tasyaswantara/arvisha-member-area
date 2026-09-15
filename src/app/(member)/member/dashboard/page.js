@@ -20,23 +20,23 @@ function createDashboardStats(productData) {
 
   return [
     {
-      title: "Active Products",
+      title: "Produk Aktif",
       value: ownedCount,
-      description: hasLiveData ? `Out of ${totalCount} total active products` : "Live product data unavailable",
+      description: hasLiveData ? `Dari total ${totalCount} produk aktif` : "Data produk tidak tersedia",
       icon: Package,
       iconClassName: "bg-primary-50 text-primary-600",
     },
     {
-      title: "Available Access",
+      title: "Akses Tersedia",
       value: ownedCount,
-      description: hasLiveData ? "Active product access for your account" : "Live access data unavailable",
+      description: hasLiveData ? "Akses produk aktif untuk akun Anda" : "Data akses tidak tersedia",
       icon: KeyRound,
       iconClassName: "bg-emerald-50 text-emerald-500",
     },
     {
-      title: "Account Status",
-      value: "Active",
-      description: "Your account is in good standing",
+      title: "Status Akun",
+      value: "Aktif",
+      description: "Akun Anda dalam kondisi baik",
       icon: UserRound,
       iconClassName: "bg-violet-50 text-violet-500",
     },
@@ -77,14 +77,14 @@ function SectionHeading({ title, description, href = "/member/products" }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h2 className="text-xl font-semibold tracking-[-0.025em] text-[#142447] sm:text-2xl">{title}</h2>
-        <p className="mt-1 text-sm text-[#6f87ad]">{description}</p>
+        <h2 className="text-base font-semibold leading-snug tracking-tight text-[#142447] md:text-lg">{title}</h2>
+        <p className="mt-1 text-xs text-[#6f87ad] md:text-sm">{description}</p>
       </div>
       <Link
         href={href}
         className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-4"
       >
-        View all products
+        Lihat semua produk
         <ArrowRight size={16} aria-hidden="true" />
       </Link>
     </div>
@@ -104,10 +104,10 @@ function DashboardHeader({ memberName }) {
               Dashboard
             </Link>
             <Link href="/member/products" className="py-7 transition hover:text-primary-600">
-              Products
+              Produk
             </Link>
             <a href="#help" className="py-7 transition hover:text-primary-600">
-              Help
+              Bantuan
             </a>
           </nav>
         </div>
@@ -136,7 +136,7 @@ function DashboardHeader({ memberName }) {
               type="submit"
               className="rounded-lg border border-primary-200 px-3 py-2 text-xs font-semibold text-primary-600 transition hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:px-4 sm:text-sm"
             >
-              Logout
+              Keluar
             </button>
           </form>
         </div>
@@ -174,20 +174,20 @@ export default async function MemberDashboardPage() {
                   <UserRound size={14} strokeWidth={2} aria-hidden="true" />
                   Member Area
                 </div>
-                <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] sm:text-5xl lg:text-[3.25rem]">
-                  Hi {memberName.split(" ")[0]},
+                <h1 className="mt-5 text-xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] md:text-2xl lg:text-3xl">
+                  Hai {memberName.split(" ")[0]},
                   <br />
-                  <span className="font-normal">Welcome back!</span>
+                  <span className="font-normal">Selamat datang kembali!</span>
                 </h1>
                 <p className="mt-5 max-w-md text-base leading-7 text-[#6f87ad]">
-                  Manage your products, access your content,
-                  <br className="hidden sm:block" /> and keep track of your account — all in one place.
+                  Kelola produk Anda, akses konten Anda,
+                  <br className="hidden sm:block" /> dan pantau akun Anda — semua di satu tempat.
                 </p>
                 <Link
                   href="/member/products"
                   className="mt-7 inline-flex items-center gap-3 rounded-full bg-primary-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(37,99,235,0.2)] transition hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
-                  Explore Products
+                  Jelajahi Produk
                   <ArrowRight size={18} aria-hidden="true" />
                 </Link>
               </div>
@@ -205,11 +205,11 @@ export default async function MemberDashboardPage() {
           </section>
         )}
 
-        <div className="mx-auto max-w-[1376px] space-y-5 px-5 pb-8 pt-5 sm:px-8 sm:pt-6 lg:px-10 xl:px-12">
+        <div className="mx-auto max-w-[1376px] space-y-6 px-5 pb-12 pt-6 sm:space-y-8 sm:px-8 sm:pt-8 lg:px-10 xl:px-12">
           {/* Greeting — preserved per client request */}
-          <div className="mb-1">
-            <h1 className="text-2xl font-bold tracking-tight text-[#142447] sm:text-3xl">
-              Hi {memberName.split(" ")[0]}, Welcome Back!
+          <div className="mb-2">
+            <h1 className="text-xl font-semibold leading-[1.08] tracking-[-0.05em] text-[#142447] md:text-2xl lg:text-3xl">
+              Hai {memberName.split(" ")[0]}, Selamat Datang Kembali!
             </h1>
           </div>
 
@@ -222,51 +222,51 @@ export default async function MemberDashboardPage() {
             </section>
           )}
 
-          <section className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-5 lg:p-6">
+          <section className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-8">
             <SectionHeading
-              title="Your Products"
-              description="Access your purchased products and manage your content."
+              title="Produk Anda"
+              description="Akses produk yang telah dibeli dan kelola konten Anda."
             />
             {ownedProducts.length > 0 ? (
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+              <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
                 {ownedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} owned />
                 ))}
               </div>
             ) : (
-              <div className="mt-4 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-4 py-6 text-center sm:px-5 sm:py-8">
-                <p className="text-sm text-[#6f87ad]">
+              <div className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-4 py-6 text-center sm:px-5 sm:py-8">
+                <p className="text-sm leading-6 text-[#6f87ad]">
                   {productData.status === "success"
-                    ? "You do not have any active products yet."
-                    : "Live product data is currently unavailable."}
+                    ? "Anda belum memiliki produk aktif."
+                    : "Data produk tidak tersedia saat ini."}
                 </p>
                 <Link
                   href="/member/products"
                   className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-4"
                 >
-                  Explore Products
+                  Jelajahi Produk
                   <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </div>
             )}
           </section>
 
-          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-4 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-5 lg:p-6">
+          <section id="help" className="rounded-3xl border border-primary-100/70 bg-white p-5 shadow-[0_10px_32px_rgba(50,103,172,0.05)] sm:p-6 lg:p-8">
             <SectionHeading
-              title="Recommended for You"
+              title="Rekomendasi untuk Anda"
               description="Dapatkan promo 10% dengan kode voucher DISKON10 untuk produk yang tersedia di bawah ini."
             />
             {recommendedProducts.length > 0 ? (
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+              <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
                 {recommendedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
-              <p className="mt-4 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-4 py-6 text-center text-sm text-[#6f87ad] sm:px-5 sm:py-8">
+              <p className="mt-5 rounded-2xl border border-dashed border-primary-100 bg-[#f7fbff] px-4 py-6 text-center text-sm leading-6 text-[#6f87ad] sm:px-5 sm:py-8">
                 {productData.status === "success"
-                  ? "No additional active products are available right now."
-                  : "Live product data is currently unavailable."}
+                  ? "Tidak ada produk aktif tambahan yang tersedia saat ini."
+                  : "Data produk tidak tersedia saat ini."}
               </p>
             )}
           </section>
@@ -288,9 +288,9 @@ export default async function MemberDashboardPage() {
             <span>© 2025 Arvisha. All rights reserved.</span>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer navigation">
-            <a href="#terms" className="transition hover:text-primary-600">Terms of Service</a>
-            <a href="#privacy" className="transition hover:text-primary-600">Privacy Policy</a>
-            <a href="#help" className="transition hover:text-primary-600">Help</a>
+            <a href="#terms" className="transition hover:text-primary-600">Syarat Ketentuan</a>
+            <a href="#privacy" className="transition hover:text-primary-600">Kebijakan Privasi</a>
+            <a href="#help" className="transition hover:text-primary-600">Bantuan</a>
           </nav>
         </div>
       </footer>

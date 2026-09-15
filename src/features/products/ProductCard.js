@@ -8,8 +8,8 @@ export function getProductDisplayDescription(product) {
 
 export default function ProductCard({ product, owned = false }) {
   const image = product.image || product.thumbnailUrl || "/images/bgeffect.png";
-  const action = product.action || (owned ? "Open Product" : product.purchaseUrl ? "Beli Dengan Promo!" : "Purchase unavailable");
-  const status = product.status || (owned ? "active" : "available");
+  const action = product.action || (owned ? "Buka Produk" : product.purchaseUrl ? "Beli Dengan Promo!" : "Pembelian tidak tersedia");
+  const status = product.status || (owned ? "aktif" : "tersedia");
   const description = getProductDisplayDescription(product);
 
   return (
@@ -31,7 +31,7 @@ export default function ProductCard({ product, owned = false }) {
 
       <div className="flex flex-1 flex-col p-3 sm:p-4">
         <h3 className="text-sm font-semibold tracking-[-0.02em] text-[#142447] line-clamp-3 sm:text-base">{product.name}</h3>
-        <p className="mt-1 text-[11px] leading-[1.35] text-[#6f87ad] line-clamp-2 sm:mt-1.5 sm:text-xs sm:leading-5">{description || "No description available."}</p>
+        <p className="mt-1 text-[11px] leading-[1.35] text-[#6f87ad] line-clamp-2 sm:mt-1.5 sm:text-xs sm:leading-5">{description || "Tidak ada deskripsi."}</p>
         <div className="mt-2.5 flex flex-wrap items-center gap-1.5 text-[10px] font-medium text-[#7890b5] sm:mt-3 sm:gap-2 sm:text-[11px]">
           {product.productType && (
             <span className="rounded-full bg-primary-50 px-1.5 py-0.5 capitalize text-primary-600 sm:px-2">
@@ -39,7 +39,7 @@ export default function ProductCard({ product, owned = false }) {
             </span>
           )}
           <span>
-            {product.contentCount} {product.contentCount === 1 ? "item" : "items"}
+            {product.contentCount} konten
           </span>
           {product.price !== null && product.price !== undefined && <span>• {product.price}</span>}
         </div>
