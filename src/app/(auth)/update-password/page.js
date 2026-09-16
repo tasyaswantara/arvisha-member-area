@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 
 import AuthPageShell from "@/components/auth/AuthPageShell";
@@ -28,9 +28,15 @@ function getFriendlyUpdateError(error) {
   return "Kami tidak dapat memperbarui kata sandi Anda. Harap coba lagi.";
 }
 
-export default function UpdatePasswordPage() {
+function UpdatePasswordForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
+
   const [supabase] = useState(() => createClient());
+  const [isExchanging, setIsExchanging] = useState(!!code);
+  const [exchangeError, setExchangeError] = useState("");
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -39,6 +45,31 @@ export default function UpdatePasswordPage() {
   const [formError, setFormError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!code) {
+      return;
+    }
+
+    async function exchangeCode() {
+      try {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+        if (error) {
+          setExchangeError(getFriendlyUpdateError(error));
+        } else {
+          // Remove the PKCE code from the URL so it's not reused on refresh
+          window.history.replaceState(null, "", "/update-password");
+        }
+      } catch {
+        setExchangeError("Gagal memverifikasi sesi. Harap minta tautan reset baru.");
+      } finally {
+        setIsExchanging(false);
+      }
+    }
+
+    exchangeCode();
+  }, [code, supabase]);
 
   useEffect(() => {
     if (!isSuccess) {
@@ -118,6 +149,105 @@ export default function UpdatePasswordPage() {
     };
   }
 
+  if (isExchanging) {
+    return (
+      <div className="mt-8 flex flex-col items-center justify-center space-y-4 rounded-2xl border border-primary-100 bg-primary-50/70 p-8 text-center text-[#55719d]">
+        <LoaderCircle aria-hidden="true" className="animate-spin text-primary-600" size={32} />
+        <p className="text-sm font-medium">Memverifikasi sesi pemulihan...</p>
+      </div>
+    );
+  }
+
+  if (exchangeError) {
+    return (
+      <div className="mt-8 rounded-xl border border-red-200 bg-red-50 px-5 py-5 text-center text-sm leading-6 text-red-700">
+        <p>{exchangeError}</p>
+        <Link
+          className="mt-4 inline-flex items-center gap-2 rounded-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          href="/forgot-password"
+        >
+          Minta tautan baru
+          <ArrowRight aria-hidden="true" size={17} />
+        </Link>
+      </div>
+    );
+  }
+
+  if (isSuccess) {
+    return (
+      <div aria-live="polite" className="mt-8 text-center">
+        <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-5 text-sm leading-6 text-[#55719d]">
+          Kata sandi Anda telah diperbarui. Mengalihkan Anda ke halaman masuk...
+        </div>
+        <Link
+          className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          href="/login"
+        >
+          Pergi ke halaman masuk sekarang
+          <ArrowRight aria-hidden="true" size={17} />
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <form className="mt-8 space-y-5" noValidate onSubmit={handleSubmit}>
+      {formError ? (
+        <div
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700"
+          role="alert"
+        >
+          {formError}
+        </div>
+      ) : null}
+
+      <PasswordField
+        autoComplete="new-password"
+        error={fieldErrors.newPassword}
+        id="new-password"
+        label="Kata sandi baru"
+        name="new-password"
+        onChange={updateField(setNewPassword, "newPassword")}
+        onToggle={() => setShowNewPassword((visible) => !visible)}
+        placeholder="Buat kata sandi"
+        value={newPassword}
+        visible={showNewPassword}
+      />
+      <PasswordField
+        autoComplete="new-password"
+        error={fieldErrors.confirmPassword}
+        id="confirm-password"
+        label="Konfirmasi kata sandi"
+        name="confirm-password"
+        onChange={updateField(setConfirmPassword, "confirmPassword")}
+        onToggle={() => setShowConfirmPassword((visible) => !visible)}
+        placeholder="Konfirmasi kata sandi Anda"
+        value={confirmPassword}
+        visible={showConfirmPassword}
+      />
+
+      <button
+        className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
+        disabled={isLoading}
+        type="submit"
+      >
+        {isLoading ? (
+          <>
+            <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
+            Memperbarui kata sandi...
+          </>
+        ) : (
+          <>
+            Perbarui kata sandi
+            <ArrowRight aria-hidden="true" size={20} />
+          </>
+        )}
+      </button>
+    </form>
+  );
+}
+
+export default function UpdatePasswordPage() {
   return (
     <AuthPageShell
       description="Pilih kata sandi baru untuk menjaga keamanan akun Arvisha Anda."
@@ -135,74 +265,15 @@ export default function UpdatePasswordPage() {
       }
       title="Buat kata sandi baru"
     >
-      {isSuccess ? (
-        <div aria-live="polite" className="mt-8 text-center">
-          <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-5 text-sm leading-6 text-[#55719d]">
-            Kata sandi Anda telah diperbarui. Mengalihkan Anda ke halaman masuk...
+      <Suspense
+        fallback={
+          <div className="mt-8 flex justify-center py-10">
+            <LoaderCircle aria-hidden="true" className="animate-spin text-primary-600" size={32} />
           </div>
-          <Link
-            className="mt-5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
-            href="/login"
-          >
-            Pergi ke halaman masuk sekarang
-            <ArrowRight aria-hidden="true" size={17} />
-          </Link>
-        </div>
-      ) : (
-        <form className="mt-8 space-y-5" noValidate onSubmit={handleSubmit}>
-          {formError ? (
-            <div
-              className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700"
-              role="alert"
-            >
-              {formError}
-            </div>
-          ) : null}
-
-          <PasswordField
-            autoComplete="new-password"
-            error={fieldErrors.newPassword}
-            id="new-password"
-            label="Kata sandi baru"
-            name="new-password"
-            onChange={updateField(setNewPassword, "newPassword")}
-            onToggle={() => setShowNewPassword((visible) => !visible)}
-            placeholder="Buat kata sandi"
-            value={newPassword}
-            visible={showNewPassword}
-          />
-          <PasswordField
-            autoComplete="new-password"
-            error={fieldErrors.confirmPassword}
-            id="confirm-password"
-            label="Konfirmasi kata sandi"
-            name="confirm-password"
-            onChange={updateField(setConfirmPassword, "confirmPassword")}
-            onToggle={() => setShowConfirmPassword((visible) => !visible)}
-            placeholder="Konfirmasi kata sandi Anda"
-            value={confirmPassword}
-            visible={showConfirmPassword}
-          />
-
-          <button
-            className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary-600 px-5 text-base font-semibold text-white shadow-lg shadow-primary-200 transition hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 disabled:cursor-not-allowed disabled:opacity-70"
-            disabled={isLoading}
-            type="submit"
-          >
-            {isLoading ? (
-              <>
-                <LoaderCircle aria-hidden="true" className="animate-spin" size={20} />
-                Memperbarui kata sandi...
-              </>
-            ) : (
-              <>
-                Perbarui kata sandi
-                <ArrowRight aria-hidden="true" size={20} />
-              </>
-            )}
-          </button>
-        </form>
-      )}
+        }
+      >
+        <UpdatePasswordForm />
+      </Suspense>
     </AuthPageShell>
   );
 }
