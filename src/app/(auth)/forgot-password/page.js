@@ -6,6 +6,7 @@ import { ArrowRight, LoaderCircle, Mail } from "lucide-react";
 
 import AuthPageShell from "@/components/auth/AuthPageShell";
 import { createClient } from "@/lib/supabase/client";
+import { getAppUrl } from "@/lib/utils/url";
 
 function getFriendlyResetError(error) {
   if (error?.status === 429 || error?.message?.toLowerCase().includes("rate limit")) {
@@ -48,7 +49,7 @@ export default function ForgotPasswordPage() {
     try {
       const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
-        redirectTo: `${window.location.origin}/update-password`
+        redirectTo: `${getAppUrl()}/update-password`
       });
 
       if (error) {

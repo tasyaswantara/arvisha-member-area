@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { checkRegistrationEligibility } from "@/features/auth/eligibility";
 import { createClient } from "@/lib/supabase/server";
+import { getAppUrl } from "@/lib/utils/url";
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 
@@ -112,6 +113,7 @@ export async function registerAction(previousState, formData) {
       email,
       password,
       options: {
+        emailRedirectTo: `${getAppUrl()}/login`,
         data: {
           full_name: fullName
         }
