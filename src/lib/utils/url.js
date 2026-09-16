@@ -1,5 +1,5 @@
 export function getAppUrl() {
-  let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  let url = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
   url = url.trim();
 
   // Make sure to include `https://` when not localhost
