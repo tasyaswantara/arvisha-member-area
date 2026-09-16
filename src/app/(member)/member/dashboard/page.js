@@ -78,7 +78,7 @@ function SectionHeading({ title, description, href = "/member/products" }) {
     <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <h2 className="text-base font-semibold leading-snug tracking-tight text-[#142447] md:text-lg">{title}</h2>
-        <p className="mt-1 text-xs text-[#6f87ad] md:text-sm">{description}</p>
+        <p className="mt-1 text-xs text-primary-700 md:text-sm">{description}</p>
       </div>
       <Link
         href={href}
