@@ -183,17 +183,25 @@ export default function RegisterPage() {
             <div className="mt-[2.5vh] text-center">
               <div className="rounded-2xl border border-primary-100 bg-primary-50/70 px-5 py-[3vh]" role="status">
                 <div className="mx-auto flex h-[5vh] w-[5vh] items-center justify-center rounded-full bg-primary-100 text-primary-600">
-                  <Mail aria-hidden="true" className="h-[2.5vh] w-[2.5vh]" />
+                  {state.confirmationRequired ? (
+                    <Mail aria-hidden="true" className="h-[2.5vh] w-[2.5vh]" />
+                  ) : (
+                    <UserRound aria-hidden="true" className="h-[2.5vh] w-[2.5vh]" />
+                  )}
                 </div>
-                <h3 className="mt-[2vh] text-[2vh] font-bold text-[#142447]">Periksa email Anda</h3>
+                <h3 className="mt-[2vh] text-[2vh] font-bold text-[#142447]">
+                  {state.confirmationRequired ? "Periksa email Anda" : "Pendaftaran Berhasil"}
+                </h3>
                 <p className="mt-[1vh] text-[1.4vh] leading-relaxed text-[#55719d]">
-                  Kami telah membuat akun Arvisha Anda. Silakan periksa kotak masuk dan verifikasi email Anda sebelum masuk.
+                  {state.confirmationRequired
+                    ? "Kami telah membuat akun Arvisha Anda. Silakan periksa kotak masuk dan verifikasi email Anda sebelum masuk."
+                    : "Akun Arvisha Anda telah berhasil dibuat. Silakan masuk menggunakan email dan kata sandi Anda."}
                 </p>
                 <Link
                   className="mt-[2.5vh] inline-flex items-center gap-2 rounded-sm text-[1.4vh] font-semibold text-primary-600 transition hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
                   href="/login"
                 >
-                  Kembali ke halaman masuk
+                  Pergi ke halaman masuk
                   <ArrowRight aria-hidden="true" className="h-[2vh] w-[2vh]" />
                 </Link>
               </div>

@@ -17,10 +17,10 @@ function getFriendlySignupError(error) {
   const message = error?.message?.toLowerCase() ?? "";
 
   if (error?.status === 429 || message.includes("rate limit")) {
-    return "Too many attempts. Please wait a moment and try again.";
+    return "Terlalu banyak percobaan. Harap tunggu sebentar dan coba lagi.";
   }
 
-  return "We couldn't create your account with this email. Please check your details or try another email.";
+  return "Kami tidak dapat membuat akun Anda dengan email ini. Silakan periksa detail Anda atau coba email lain.";
 }
 
 export async function registerAction(previousState, formData) {
@@ -80,7 +80,7 @@ export async function registerAction(previousState, formData) {
   if (eligibility.reason === "not_found") {
     return {
       fieldErrors: {},
-      formError: "This email is not eligible to create an account.",
+      formError: "Email ini tidak terdaftar untuk membuat akun. Pastikan Anda menggunakan email pembelian yang benar.",
       success: false,
       confirmationRequired: false
     };
@@ -89,7 +89,7 @@ export async function registerAction(previousState, formData) {
   if (eligibility.reason === "unavailable") {
     return {
       fieldErrors: {},
-      formError: "We couldn't verify your eligibility right now. Please try again later.",
+      formError: "Kami tidak dapat memverifikasi status Anda saat ini. Silakan coba lagi nanti.",
       success: false,
       confirmationRequired: false
     };
@@ -98,7 +98,7 @@ export async function registerAction(previousState, formData) {
   if (!eligibility.eligible) {
     return {
       fieldErrors: {},
-      formError: "We couldn't verify your eligibility right now. Please try again later.",
+      formError: "Kami tidak dapat memverifikasi status Anda saat ini. Silakan coba lagi nanti.",
       success: false,
       confirmationRequired: false
     };
@@ -125,7 +125,7 @@ export async function registerAction(previousState, formData) {
   } catch {
     return {
       fieldErrors: {},
-      formError: "Something went wrong. Please try again.",
+      formError: "Terjadi kesalahan. Silakan coba lagi.",
       success: false,
       confirmationRequired: false
     };
@@ -143,7 +143,7 @@ export async function registerAction(previousState, formData) {
   if (!data?.user) {
     return {
       fieldErrors: {},
-      formError: "Something went wrong. Please try again.",
+      formError: "Terjadi kesalahan. Silakan coba lagi.",
       success: false,
       confirmationRequired: false
     };
@@ -161,7 +161,7 @@ export async function registerAction(previousState, formData) {
     if (memberError || !member) {
       return {
         fieldErrors: {},
-        formError: "Account created but profile linking failed. Please contact support.",
+        formError: "Akun berhasil dibuat, namun gagal menghubungkan profil. Silakan hubungi dukungan pelanggan.",
         success: false,
         confirmationRequired: false
       };
@@ -170,7 +170,7 @@ export async function registerAction(previousState, formData) {
     if (member.customer_id && member.customer_id !== eligibility.customerId) {
       return {
         fieldErrors: {},
-        formError: "Account created but could not be linked safely. Please contact support.",
+        formError: "Akun berhasil dibuat, namun tidak dapat dihubungkan dengan aman. Silakan hubungi dukungan pelanggan.",
         success: false,
         confirmationRequired: false
       };
@@ -185,7 +185,7 @@ export async function registerAction(previousState, formData) {
       if (updateError) {
         return {
           fieldErrors: {},
-          formError: "Account created but profile linking failed. Please contact support.",
+          formError: "Akun berhasil dibuat, namun gagal menghubungkan profil. Silakan hubungi dukungan pelanggan.",
           success: false,
           confirmationRequired: false
         };
@@ -201,14 +201,22 @@ export async function registerAction(previousState, formData) {
     console.error("[registerAction] Post-signup linking or reconciliation failed:", err);
     return {
       fieldErrors: {},
-      formError: "Account created but profile linking failed. Please contact support.",
+      formError: "Akun berhasil dibuat, namun gagal menghubungkan profil. Silakan hubungi dukungan pelanggan.",
       success: false,
       confirmationRequired: false
     };
   }
 
   if (data.session) {
-    redirect("/member/dashboard");
+    // Jika konfirmasi email dimatikan di Supabase, user akan langsung mendapat sesi.
+    // Karena Anda ingin diarahkan ke login, kita hapus sesinya agar middleware tidak melempar balik ke dashboard.
+    await supabase.auth.signOut();
+    return {
+      fieldErrors: {},
+      formError: "",
+      success: true,
+      confirmationRequired: false
+    };
   }
 
   return {
