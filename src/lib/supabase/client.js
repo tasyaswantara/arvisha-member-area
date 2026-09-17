@@ -16,5 +16,9 @@ function getSupabaseConfig() {
 export function createClient() {
   const { url, publishableKey } = getSupabaseConfig();
 
-  return createBrowserClient(url, publishableKey);
+  return createBrowserClient(url, publishableKey, {
+    auth: {
+      detectSessionInUrl: false,
+    },
+  });
 }
