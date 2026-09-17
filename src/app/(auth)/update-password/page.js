@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState, useRef } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, LoaderCircle } from "lucide-react";
@@ -16,7 +16,9 @@ function getFriendlyUpdateError(error) {
     message.includes("session") ||
     message.includes("expired") ||
     message.includes("invalid") ||
-    message.includes("token")
+    message.includes("token") ||
+    message.includes("used") ||
+    message.includes("pkce")
   ) {
     return "Tautan tidak valid atau telah digunakan. Pastikan Anda membuka tautan di browser yang sama saat Anda meminta reset, atau minta tautan baru.";
   }
@@ -28,13 +30,14 @@ function getFriendlyUpdateError(error) {
   return "Kami tidak dapat memperbarui kata sandi Anda. Harap coba lagi.";
 }
 
+const processedCodes = new Set();
+
 function UpdatePasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
   const [supabase] = useState(() => createClient());
-  const exchangeAttempted = useRef(false);
   const [isExchanging, setIsExchanging] = useState(!!code);
   const [exchangeError, setExchangeError] = useState("");
 
@@ -48,11 +51,11 @@ function UpdatePasswordForm() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    if (!code || exchangeAttempted.current) {
+    if (!code || processedCodes.has(code)) {
       return;
     }
 
-    exchangeAttempted.current = true;
+    processedCodes.add(code);
 
     async function exchangeCode() {
       try {
@@ -62,7 +65,7 @@ function UpdatePasswordForm() {
           setExchangeError(getFriendlyUpdateError(error));
         } else {
           // Remove the PKCE code from the URL so it's not reused on refresh
-          window.history.replaceState(null, "", "/update-password");
+          router.replace("/update-password");
         }
       } catch {
         setExchangeError("Gagal memverifikasi sesi. Harap minta tautan reset baru.");
@@ -72,7 +75,7 @@ function UpdatePasswordForm() {
     }
 
     exchangeCode();
-  }, [code, supabase]);
+  }, [code, supabase, router]);
 
   useEffect(() => {
     if (!isSuccess) {
