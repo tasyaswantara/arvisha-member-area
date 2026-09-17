@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, LoaderCircle } from "lucide-react";
@@ -18,7 +18,7 @@ function getFriendlyUpdateError(error) {
     message.includes("invalid") ||
     message.includes("token")
   ) {
-    return "Tautan reset kata sandi ini tidak valid atau telah kedaluwarsa. Harap minta tautan baru.";
+    return "Tautan tidak valid atau telah digunakan. Pastikan Anda membuka tautan di browser yang sama saat Anda meminta reset, atau minta tautan baru.";
   }
 
   if (error?.status === 429 || message.includes("rate limit")) {
@@ -34,6 +34,7 @@ function UpdatePasswordForm() {
   const code = searchParams.get("code");
 
   const [supabase] = useState(() => createClient());
+  const exchangeAttempted = useRef(false);
   const [isExchanging, setIsExchanging] = useState(!!code);
   const [exchangeError, setExchangeError] = useState("");
 
@@ -47,9 +48,11 @@ function UpdatePasswordForm() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    if (!code) {
+    if (!code || exchangeAttempted.current) {
       return;
     }
+
+    exchangeAttempted.current = true;
 
     async function exchangeCode() {
       try {
