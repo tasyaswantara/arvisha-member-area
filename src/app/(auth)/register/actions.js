@@ -106,9 +106,10 @@ export async function registerAction(previousState, formData) {
 
   let data;
   let error;
+  let supabase;
 
   try {
-    const supabase = await createClient();
+    supabase = await createClient();
     const response = await supabase.auth.signUp({
       email,
       password,
