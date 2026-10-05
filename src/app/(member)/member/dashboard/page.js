@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getMemberProductData } from "@/features/products/data";
 import ProductCard from "@/features/products/ProductCard";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
   ArrowRight,
   Bell,
@@ -294,6 +295,7 @@ export default async function MemberDashboardPage() {
           </nav>
         </div>
       </footer>
+      <WhatsAppButton />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight, LoaderCircle, Mail, UserRound } from "lucide-react";
 
 import PasswordField from "@/components/auth/PasswordField";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { registerAction } from "./actions";
 
 const initialState = {
@@ -324,6 +325,7 @@ export default function RegisterPage() {
           )}
         </section>
       </div>
+      <WhatsAppButton />
     </main>
   );
 }

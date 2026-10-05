@@ -14,6 +14,7 @@ import {
 
 import { createClient } from "@/lib/supabase/client";
 import AuthPageShell from "@/components/auth/AuthPageShell";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 function getFriendlyLoginError(error) {
   const message = error?.message?.toLowerCase() ?? "";
@@ -107,6 +108,7 @@ export default function LoginPage() {
   }
 
   return (
+    <>
     <AuthPageShell
       eyebrow="Selamat datang kembali"
       title="Masuk ke akun Anda"
@@ -245,5 +247,7 @@ export default function LoginPage() {
         </button>
       </form>
     </AuthPageShell>
+    <WhatsAppButton />
+    </>
   );
 }

@@ -159,6 +159,11 @@ export async function getMemberProductData() {
           );
         }
 
+        // Exclude LDR products from recommendations
+        if (product.product_key && product.product_key.includes('ldr')) {
+          return false;
+        }
+
         return !hasContentOverlap;
       })
       .map((product) => toProductDto(product));
