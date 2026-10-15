@@ -54,6 +54,19 @@ function getUnitAmount(item) {
   return item.price;
 }
 
+function parseAddonPrice(price) {
+  if (typeof price === "number" && Number.isFinite(price) && price >= 0) {
+    return price;
+  }
+  if (typeof price === "string" && price.trim() !== "") {
+    const parsed = Number(price.trim());
+    if (Number.isFinite(parsed) && parsed >= 0) {
+      return parsed;
+    }
+  }
+  return null;
+}
+
 function getAddonFingerprintData(addons) {
   if (!Array.isArray(addons)) {
     return [];
@@ -64,7 +77,7 @@ function getAddonFingerprintData(addons) {
     .map((addon) => ({
       id: typeof addon.id === "string" ? addon.id : null,
       name: typeof addon.name === "string" ? addon.name : null,
-      price: typeof addon.price === "number" && Number.isFinite(addon.price) ? addon.price : null
+      price: parseAddonPrice(addon.price)
     }))
     .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
 }
