@@ -110,8 +110,13 @@ function ProductSection({ title, description, products, emptyMessage }) {
       </div>
       {products.length > 0 ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2 lg:gap-5 xl:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} owned={product.status === "active"} />
+          {products.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              owned={product.status === "active"}
+              priority={index < 3}
+            />
           ))}
         </div>
       ) : (

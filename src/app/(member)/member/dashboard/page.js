@@ -230,8 +230,8 @@ export default async function MemberDashboardPage() {
             />
             {ownedProducts.length > 0 ? (
               <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
-                {ownedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} owned />
+                {ownedProducts.map((product, index) => (
+                  <ProductCard key={product.id} product={product} owned priority={index < 4} />
                 ))}
               </div>
             ) : (

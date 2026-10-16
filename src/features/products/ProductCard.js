@@ -1,13 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
 export function getProductDisplayDescription(product) {
   return product.description?.trim() || "";
 }
 
-export default function ProductCard({ product, owned = false }) {
-  const image = product.image || product.thumbnailUrl || "/images/bgeffect.png";
+export default function ProductCard({ product, owned = false, priority = false }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const rawImage = product.image || product.thumbnailUrl || "/images/bgeffect.webp";
+  // Automatically prefer optimized .webp format if the path points to .png
+  const image = rawImage.replace(/\.png$/i, ".webp");
   const action = product.action || (owned ? "Buka Produk" : product.purchaseUrl ? "Beli Dengan Promo!" : "Pembelian tidak tersedia");
   const status = product.status || (owned ? "aktif" : "tersedia");
   const description = getProductDisplayDescription(product);
@@ -15,14 +21,27 @@ export default function ProductCard({ product, owned = false }) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-xl border border-primary-100/80 bg-white shadow-[0_10px_30px_rgba(50,103,172,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(50,103,172,0.1)] sm:rounded-2xl">
       <div className="relative aspect-square w-full overflow-hidden bg-[#edf5ff]">
+        {/* Shimmer Skeleton Placeholder */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-r from-[#edf5ff] via-[#e2eeff] to-[#edf5ff] transition-opacity duration-500 ${
+            isLoaded ? "opacity-0 pointer-events-none" : "animate-pulse opacity-100"
+          }`}
+          aria-hidden="true"
+        />
+
         <Image
           src={image}
           alt={product.name}
           fill
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
           sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 20vw"
-          className={`object-cover ${owned ? "" : "opacity-100"}`}
+          onLoad={() => setIsLoaded(true)}
+          className={`object-cover transition-all duration-500 ease-out ${
+            isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-[1.02]"
+          } ${owned ? "" : "opacity-100"}`}
         />
-        <div className="absolute inset-0" />
+        <div className="absolute inset-0 pointer-events-none" />
         <span className="absolute bottom-2 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-semibold capitalize text-[#4f6d9e] shadow-sm sm:left-3 sm:px-2.5 sm:text-[10px]">
           <span className={`h-1.5 w-1.5 rounded-full ${owned ? "bg-emerald-400" : "bg-primary-400"}`} aria-hidden="true" />
           {status}
