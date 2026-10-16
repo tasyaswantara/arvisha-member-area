@@ -124,6 +124,7 @@ function normalizeItems(messageData) {
 
         resultItems.push({
           ...normalizedAddon,
+          addonName: addon.name,
           itemFingerprint: addonFingerprint
         });
       }
@@ -225,6 +226,49 @@ async function resolveProducts(supabase, items) {
     (mappedProducts ?? []).forEach(mapping => {
       productsByExternalRef.set(mapping.external_ref, mapping.product_id);
     });
+  }
+
+  // Fallback: If still unresolved, try matching by addon name against active products
+  const stillUnresolved = items.filter(
+    (item) => !productsByExternalRef.has(item.externalProductRef) && item.addonName
+  );
+
+  if (stillUnresolved.length > 0) {
+    const { data: allActiveProducts } = await supabase
+      .from("products")
+      .select("id, name, product_key")
+      .eq("provider", "lynk")
+      .eq("is_active", true);
+
+    if (allActiveProducts && allActiveProducts.length > 0) {
+      for (const item of stillUnresolved) {
+        const cleanAddonName = String(item.addonName).toLowerCase();
+        const matched = allActiveProducts.find((p) => {
+          const pName = p.name.toLowerCase();
+          if (cleanAddonName.includes("pertanyaan random") && pName.includes("pertanyaan random")) return true;
+          if (cleanAddonName.includes("nostalgia") && pName.includes("nostalgia")) return true;
+          if (cleanAddonName.includes("this or that") && pName.includes("this or that")) return true;
+          if (cleanAddonName.includes("fun challenge") && pName.includes("fun challenge")) return true;
+          if (cleanAddonName.includes("mystery box") && pName.includes("mystery box")) return true;
+          if (cleanAddonName.includes("carnival") && pName.includes("carnival")) return true;
+          return false;
+        });
+
+        if (matched) {
+          productsByExternalRef.set(item.externalProductRef, matched.id);
+          await supabase
+            .from("product_external_mappings")
+            .upsert(
+              {
+                provider: "lynk",
+                external_ref: item.externalProductRef,
+                product_id: matched.id
+              },
+              { onConflict: "provider,external_ref" }
+            );
+        }
+      }
+    }
   }
 
   return productsByExternalRef;
